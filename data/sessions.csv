@@ -1,0 +1,5 @@
+session_id,date,shooter,shots,knee,camera_distance_m,video_file,notes
+S01,2026-11-11,mehmet,150,no_pain,9,VID_20261111_103428.mp4,approx count; left knee brace; rim 2.95 m
+S01,2026-11-11,father,150,na,9,VID_20261111_103428.mp4,approx count
+S02,2026-11-11,mehmet,50,no_pain,6,VID_20261111_111134.mp4,left knee brace
+S02,2026-11-11,father,50,na,6,VID_20261111_111134.mp4,
