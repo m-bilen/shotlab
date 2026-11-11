@@ -40,17 +40,18 @@ def play(path, start_s = 0.0):
     fps = video_info(path)["fps"]
     start_frame = int(start_s * fps)
     delay_ms = max(1, int(1000 / fps))
+    paused = False
     for index, frame in read_frames(path, start_frame):
         small = cv2.resize(frame, (960,540))
         text = f"frame {index} t = {index / fps:.2f}s"
         cv2.putText(small, text, (20, 40), cv2.FONT_HERSHEY_SIMPLEX,
                     1.0, (0, 255, 255), 2)
         cv2.imshow("ShotLab", small)
-        key = cv2.waitKey(delay_ms) & 0xFF
+        key = cv2.waitKey(0 if paused else delay_ms) & 0xFF
         if key == ord("q"):
             break
         if key == ord(" "):
-            cv2.waitKey(0)
+            paused = not paused
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
