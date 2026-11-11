@@ -2,7 +2,9 @@ import cv2
 import mediapipe as mp
 import numpy as np 
 from shotlab.video import read_frame
-from shotlab.geometry import square_roi
+from pathlib import Path
+
+from shotlab.roi import get_roi
 
 MODEL_PATH = "models/pose_landmarker_full.task"
 vision = mp.tasks.vision
@@ -58,13 +60,7 @@ if __name__ == "__main__":
     frame_index = int(sys.argv[2])
 
     frame = read_frame(video_path, frame_index)
-    scale = frame.shape[1] / 960
-    small = cv2.resize(frame, (960, 540))
-
-    x, y, w, h = cv2.selectROI("Select shooter area", small)
-    cv2.destroyWindow("Select shooter area")
-    roi = (int(x * scale), int(y * scale), int(w * scale), int(h * scale))
-    roi = square_roi(roi, frame.shape[1], frame.shape[0])
+    roi = get_roi(Path(video_path).name)
     print(f"ROI: {roi}")
     with create_landmarker() as landmarker:
         poses = detect_poses(landmarker, frame, roi)
