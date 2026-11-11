@@ -36,6 +36,12 @@ def read_frames(path, start_frame = 0):
     finally: 
         cap.release()
 
+def read_frame(path, index):
+    for _, frame in read_frames(path, start_frame=index):
+        return frame
+    raise ValueError(f"Frame {index} not found in { path }")
+
+
 def play(path, start_s = 0.0):
     fps = video_info(path)["fps"]
     start_frame = int(start_s * fps)
