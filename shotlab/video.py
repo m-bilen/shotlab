@@ -20,20 +20,23 @@ def video_info(path):
         "duration_s": frame_count / fps,
     }
 
-def read_frames(path, start_frame = 0):
+def read_frames(path, start_frame=0):
     cap = cv2.VideoCapture(path)
     if not cap.isOpened():
         raise FileNotFoundError(f"Could not open video: {path}")
-    cap.set(cv2.CAP_PROP_POS_FRAMES , start_frame)
-    index = start_frame
+
     try:
+        for _ in range(start_frame):
+            if not cap.grab():
+                return
+        index = start_frame
         while True:
             ok, frame = cap.read()
             if not ok:
                 break
-            yield index, frame 
+            yield index, frame
             index += 1
-    finally: 
+    finally:
         cap.release()
 
 def read_frame(path, index):
