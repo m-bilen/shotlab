@@ -34,13 +34,14 @@ def read_frames(path, start_frame=0):
             ok, frame = cap.read()
             if not ok:
                 break
-            yield index, frame
+            t_ms = cap.get(cv2.CAP_PROP_POS_MSEC)
+            yield index, t_ms, frame
             index += 1
     finally:
         cap.release()
 
 def read_frame(path, index):
-    for _, frame in read_frames(path, start_frame=index):
+    for _, _, frame in read_frames(path, start_frame=index):
         return frame
     raise ValueError(f"Frame {index} not found in { path }")
 
@@ -50,9 +51,9 @@ def play(path, start_s = 0.0):
     start_frame = int(start_s * fps)
     delay_ms = max(1, int(1000 / fps))
     paused = False
-    for index, frame in read_frames(path, start_frame):
-        small = cv2.resize(frame, (960,540))
-        text = f"frame {index} t = {index / fps:.2f}s"
+    for index, t_ms, frame in read_frames(path, start_frame):
+        small = cv2.resize(frame, (960, 540))
+        text = f"frame {index}  t={t_ms / 1000:.2f}s"
         cv2.putText(small, text, (20, 40), cv2.FONT_HERSHEY_SIMPLEX,
                     1.0, (0, 255, 255), 2)
         cv2.imshow("ShotLab", small)

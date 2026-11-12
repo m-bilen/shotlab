@@ -6,20 +6,24 @@ from pathlib import Path
 
 from shotlab.roi import get_roi
 
-MODEL_PATH = "models/pose_landmarker_full.task"
+MODELS = {
+    "full": "models/pose_landmarker_full.task",
+    "heavy": "models/pose_landmarker_heavy.task",
+}
+DEFAULT_MODEL = "heavy"
 vision = mp.tasks.vision
 CONNECTIONS = [(c.start, c.end) for c in vision.PoseLandmarksConnections.POSE_LANDMARKS]
 
 
-def create_landmarker(running_mode= vision .RunningMode.IMAGE, num_poses = 2):
+def create_landmarker(running_mode=vision.RunningMode.IMAGE, num_poses=2, model=DEFAULT_MODEL):
     options = vision.PoseLandmarkerOptions(
-        base_options=mp.tasks.BaseOptions(model_asset_path=MODEL_PATH),
+        base_options=mp.tasks.BaseOptions(model_asset_path=MODELS[model]),
         running_mode = running_mode,
         num_poses=num_poses,
     )
     return vision.PoseLandmarker.create_from_options(options)
 
-def detect_poses(landmarker, frame_bgr, roi=None):
+def detect_poses(landmarker, frame_bgr, roi=None, timestamp_ms=None):
     x0, y0 = 0, 0
     if roi is not None:
         x0, y0, w, h = roi
@@ -27,7 +31,10 @@ def detect_poses(landmarker, frame_bgr, roi=None):
     img_h, img_w = frame_bgr.shape[:2]
     rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
     image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb)
-    result = landmarker.detect(image)
+    if timestamp_ms is None:
+        result = landmarker.detect(image)
+    else:
+        result = landmarker.detect_for_video(image, timestamp_ms)
 
     poses = []
     for landmarks in result.pose_landmarks:
