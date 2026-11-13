@@ -52,9 +52,12 @@ def draw_poses(frame_bgr, poses, roi=None):
 
     for points in poses:
         for start, end in CONNECTIONS:
+            RIGHT_SIDE = {12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32}
             p1 = (int(points[start, 0]), int(points[start, 1]))
             p2 = (int(points[end, 0]), int(points[end, 1]))
-            cv2.line(frame_bgr, p1, p2, (255, 255, 255), 3)
+            right = start in RIGHT_SIDE and end in RIGHT_SIDE
+            color = (0, 255, 0) if right else (255, 255, 255)
+            cv2.line(frame_bgr, p1, p2, color, 3)
         for px, py, _ in points:
             cv2.circle(frame_bgr, (int(px), int(py)), 6, (0, 0, 255), -1)
     return frame_bgr

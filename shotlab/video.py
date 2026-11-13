@@ -46,12 +46,14 @@ def read_frame(path, index):
     raise ValueError(f"Frame {index} not found in { path }")
 
 
-def play(path, start_s = 0.0):
+def play(path, start_s = 0.0, overlay=None):
     fps = video_info(path)["fps"]
     start_frame = int(start_s * fps)
     delay_ms = max(1, int(1000 / fps))
     paused = False
     for index, t_ms, frame in read_frames(path, start_frame):
+        if overlay is not None:
+            overlay(frame, index)
         small = cv2.resize(frame, (960, 540))
         text = f"frame {index}  t={t_ms / 1000:.2f}s"
         cv2.putText(small, text, (20, 40), cv2.FONT_HERSHEY_SIMPLEX,
