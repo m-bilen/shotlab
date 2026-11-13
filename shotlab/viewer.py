@@ -4,15 +4,14 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from shotlab.extract import OUTPUT_DIR
+from shotlab.extract import landmarks_path
 from shotlab.pose import DEFAULT_MODEL, draw_poses
 from shotlab.roi import get_roi
 from shotlab.video import play
 
 
 def load_points(video_path, model=DEFAULT_MODEL):
-    path = OUTPUT_DIR / f"{Path(video_path).stem}_{model}.parquet"
-    df = pd.read_parquet(path)
+    df = pd.read_parquet(landmarks_path(video_path, model))
     return df.iloc[:, 2:].to_numpy().reshape(len(df), 33, 3)
 
 if __name__ == "__main__":

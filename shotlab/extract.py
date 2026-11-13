@@ -12,6 +12,9 @@ OUTPUT_DIR = Path("data/landmarks")
 LANDMARK_NAMES = [lm.name.lower() for lm in vision.PoseLandmark]
 VALUE_COLUMNS = [f"{name}_{axis}" for name in LANDMARK_NAMES for axis in ("x", "y","v")]
 
+def landmarks_path(video_file, model=DEFAULT_MODEL):
+    return OUTPUT_DIR / f"{Path(video_file).stem}_{model}.parquet"
+
 
 def extract_landmarks(video_path, roi, max_frames=None, model=DEFAULT_MODEL):   
     frames, times, values = [], [], []
@@ -46,7 +49,7 @@ if __name__ == "__main__":
     roi = get_roi(video_path.name)
     df = extract_landmarks(str(video_path), roi, max_frames)
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = OUTPUT_DIR / f"{video_path.stem}_{DEFAULT_MODEL}.parquet" 
+    out_path = landmarks_path(video_path)
     df.to_parquet(out_path, index=False)
 
     missing = df["nose_x"].isna().mean() * 100
