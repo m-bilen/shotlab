@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 
 from shotlab.extract import landmarks_path
+from shotlab.geometry import angle
 
 SESSIONS_PATH = Path("data/sessions.csv")
 MANUAL_PATH = Path("data/release_frames_manual.csv")
@@ -12,6 +13,7 @@ SHOTS_PATH = Path("data/shots.csv")
 MIN_VISIBILITY = 0.5
 MAX_GAP_MS = 120
 MIN_LENGTH_MS = 250
+MIN_ELBOW_MAX = 150
 
 def find_runs(mask):
     padded = np.concatenate([[False], mask, [False]])
@@ -32,6 +34,16 @@ def arm_up_mask(df):
     nose_y = df["nose_y"].to_numpy()
     visible = df["right_wrist_v"].to_numpy() > MIN_VISIBILITY
     return (wrist_y < nose_y) & visible
+
+def xy(df, name):
+    return df[[f"{name}_x", f"{name}_y"]].to_numpy()
+
+def elbow_at(df, frames):
+    rows = df.set_index("frame").loc[frames]
+    return angle(xy(rows, "right_shoulder"), xy(rows, "right_elbow"), xy(rows, "right_wrist"))
+
+def keep_real_shots(shots):
+    return shots[shots["elbow_max"] >= MIN_ELBOW_MAX].reset_index(drop=True)
 
 def detect_shots(df):
     t = df["t_ms"].to_numpy()
@@ -54,10 +66,17 @@ def detect_shots(df):
     return pd.DataFrame(rows, columns=columns)
 
 def shots_for_session(row):
-    columns = ["frame", "t_ms", "nose_y", "right_wrist_y", "right_wrist_v"]
+    columns = ["frame", "t_ms", "nose_y", "right_wrist_y", "right_wrist_v","right_shoulder_x", "right_shoulder_y", "right_elbow_x", "right_elbow_y", "right_wrist_x"]
     df = pd.read_parquet(landmarks_path(row.video_file), columns=columns)
     part = df[(df["frame"] >= row.start_frame) & (df["frame"] < row.end_frame)]
     shots = detect_shots(part.reset_index(drop=True))
+    shots["elbow_top"] = elbow_at(part, shots["wrist_top_frame"]).round(1)
+    elbow = angle(xy(part, "right_shoulder"), xy(part, "right_elbow"), xy(part, "right_wrist"))
+    frames = part["frame"].to_numpy()
+    shots["elbow_max"] = [
+        round(float(np.nanmax(elbow[(frames >= s) & (frames < e)])), 1)
+        for s, e in zip(shots["start_frame"], shots["end_frame"])
+    ]
     shots.insert(0, "shooter", row.shooter)
     shots.insert(0, "session_id", row.session_id)
     shots.insert(0, "video_file", row.video_file)
@@ -74,12 +93,13 @@ def manual_inside_shots(shots, manual):
 if __name__ == "__main__":
     sessions = pd.read_csv(SESSIONS_PATH)
     shots = pd.concat([shots_for_session(r) for r in sessions.itertuples()], ignore_index=True)
+    shots = keep_real_shots(shots)
     shots["duration_s"] = ((shots["end_ms"] - shots["start_ms"]) / 1000).round(2)
     group = shots.groupby(["video_file", "shooter"])
     shots["gap_s"] = (group["start_ms"].diff() / 1000).round(2)  
     shots.to_csv(SHOTS_PATH, index=False)
 
-    summary = sessions.set_index(["session_id", "shooter"])[["shots"]]
+    summary = sessions.groupby(["session_id", "shooter"])[["shots"]].sum()
     summary["found"] = shots.groupby(["session_id", "shooter"]).size()
     print(summary)
     stats = shots.groupby(["session_id", "shooter"]).agg(

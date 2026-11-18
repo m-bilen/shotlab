@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from shotlab.shots import detect_shots, find_runs, merge_runs
+from shotlab.shots import detect_shots, find_runs, merge_runs, keep_real_shots
 
 
 def test_find_runs():
@@ -45,3 +45,7 @@ def test_detect_shots_same_at_30_fps():
     shots = detect_shots(df)
     assert len(shots) == 1
     assert shots.iloc[0][["start_frame", "end_frame"]].tolist() == [10,25] 
+
+def test_keep_real_shots():
+    shots = pd.DataFrame({"elbow_max": [175.0, 120.0, 150.0, np.nan]})
+    assert keep_real_shots(shots)["elbow_max"].tolist() == [175.0, 150.0]
