@@ -11,9 +11,10 @@ Any change to the analysis is written here first.
 | S02 | 2026-11-11 | 6 m | 60 | electric | ~50 | ~50 |
 | S03 | 2026-11-12 | 7.5 m | 60 | daylight | ~150 | ~150 |
 | S04 | 2026-11-12 | 6.5 m | 60 | dark | ~100 | ~100 |
-| S05 | 2026-11-14 | ~7 m | 30 | electric | ~150 | ~195 (2 videos) |
-| S06 | 2026-11-14 | ~7 m | 30 | electric | ~150 | ~150 |
-| S07 | 2026-11-15 | ~7 m | 60 | planned | ~150 | ~150 |
+| S05 | 2026-11-14 | 7 m | 30 | electric | ~150 | ~195 (2 videos) |
+| S06 | 2026-11-14 | 7 m | 30 | electric | ~150 | ~150 |
+| S07 | 2026-11-15 | 7 m | 60 | electric | ~150 | ~150 |
+| S08 | 2026-11-15 | 7 m | 60 | electric | ~100 | ~100 |
 
 - Unit of analysis: one shot.
 - Shot type: free throw, no jump, same spot.

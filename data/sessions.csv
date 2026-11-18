@@ -1,9 +1,18 @@
-session_id,date,shooter,shots,knee,camera_distance_m,video_file,start_frame,end_frame,notes
-S01,2026-11-11,mehmet,150,no_pain,9,VID_20261111_103428.mp4,0,67673,approx count; left knee brace; rim 2.95 m
-S01,2026-11-11,father,150,na,9,VID_20261111_103428.mp4,67673,133753,approx count
-S02,2026-11-11,mehmet,50,no_pain,6,VID_20261111_111134.mp4,0,22299,left knee brace
-S02,2026-11-11,father,50,na,6,VID_20261111_111134.mp4,22299,45431,
-S03,2026-11-12,mehmet,150,no_pain,7.5,VID_20261112_104955.mp4,0,67234,approx count; left knee brace; no electricity - daylight only
-S03,2026-11-12,father,150,na,7.5,VID_20261112_104955.mp4,67234,139357,approx count; lights on for about 5 min mid-session
-S04,2026-11-12,mehmet,100,no_pain,6.5,VID_20261112_112656.mp4,0,45591,approx count; left knee brace; no electricity - dark
-S04,2026-11-12,father,100,na,6.5,VID_20261112_112656.mp4,45591,92471,approx count; no electricity - dark
+session_id,date,shooter,shots,knee,camera_distance_m,fps,video_file,start_frame,end_frame,notes
+S01,2026-11-11,mehmet,150,no_pain,9,60,VID_20261111_103428.mp4,0,67673,approx count; left knee brace; rim 2.95 m
+S01,2026-11-11,father,150,na,9,60,VID_20261111_103428.mp4,67673,133753,approx count
+S02,2026-11-11,mehmet,50,no_pain,6,60,VID_20261111_111134.mp4,0,22299,left knee brace
+S02,2026-11-11,father,50,na,6,60,VID_20261111_111134.mp4,22299,45431,
+S03,2026-11-12,mehmet,150,no_pain,7.5,60,VID_20261112_104955.mp4,0,67234,approx count; left knee brace; no electricity - daylight only
+S03,2026-11-12,father,150,na,7.5,60,VID_20261112_104955.mp4,67234,139357,approx count; lights on for about 5 min mid-session
+S04,2026-11-12,mehmet,100,no_pain,6.5,60,VID_20261112_112656.mp4,0,45591,approx count; left knee brace; no electricity - dark
+S04,2026-11-12,father,100,na,6.5,60,VID_20261112_112656.mp4,45591,92471,approx count; no electricity - dark
+S05,2026-11-14,mehmet,150,no_pain,7,30,VID_20261114_102534.mp4,0,34933,approx count; left knee brace; recorded at 30 fps by mistake
+S05,2026-11-14,father,45,na,7,30,VID_20261114_102534.mp4,34933,43849,approx count; father left mid-session
+S05,2026-11-14,father,150,na,7,30,VID_20261114_111007.mp4,0,34896,approx count; father continued after a break
+S06,2026-11-14,mehmet,150,no_pain,7,30,VID_20261114_120101.mp4,0,38294,approx count; left knee brace
+S06,2026-11-14,father,150,na,7,30,VID_20261114_120101.mp4,38294,74340,approx count
+S07,2026-11-15,mehmet,150,no_pain,7,60,VID_20261115_103206.mp4,0,76975,approx count; left knee brace
+S07,2026-11-15,father,150,na,7,60,VID_20261115_103206.mp4,76975,147452,approx count
+S08,2026-11-15,mehmet,100,no_pain,7,60,VID_20261115_111103.mp4,0,52002,approx count; left knee brace
+S08,2026-11-15,father,100,na,7,60,VID_20261115_111103.mp4,52002,93704,approx count
