@@ -63,9 +63,10 @@ Any change to the analysis is written here first.
    Used only to check results per group.
 5. **Remove duplicate shots** before any analysis.
 6. **Release detection:** tuned on S02 labels, error reported on other sessions.
-7. **Audio label model:** trained on S01-S04, tested on S05-S07
-   (random sample checked by hand). Model labels are never used to
-   evaluate the model itself.
+7. **Audio label model:** trained on manual labels of S01-S04. It labels S05-S08,
+   then every S05-S08 shot is labeled again by hand without seeing the model's
+   label. Disagreements are reviewed a second time. Accuracy is reported on all
+   S05-S08 shots against the hand labels.
 8. **YOLO fine-tune:** validation set is a whole held-out video,
    never random frames from training videos.
 9. **Experiment (step 9)** is the final out-of-sample test of A1.
