@@ -11,3 +11,8 @@
   150 degrees. Catching a high pass also lifts the wrist but keeps the elbow bent.
   Elbow angle at the wrist's highest point did not work: the father's wrist peaks
   at his set point, before the arm extends.
+
+  - **Manual labels are cross-checked against detection:** 4 of 58 manual release
+  frames did not fall inside any detected shot. All 4 were labeling mistakes
+  (no shot at that frame) and were corrected. Manual labels are not assumed
+  to be error-free.
