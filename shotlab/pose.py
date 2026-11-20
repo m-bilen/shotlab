@@ -13,6 +13,10 @@ MODELS = {
 DEFAULT_MODEL = "heavy"
 vision = mp.tasks.vision
 CONNECTIONS = [(c.start, c.end) for c in vision.PoseLandmarksConnections.POSE_LANDMARKS]
+RIGHT_SIDE = {12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32}
+LANDMARK_NAMES = [lm.name.lower() for lm in vision.PoseLandmark]
+AXES = ("x", "y", "v")
+VALUE_COLUMNS = [f"{name}_{axis}" for name in LANDMARK_NAMES for axis in AXES]
 
 
 def create_landmarker(running_mode=vision.RunningMode.IMAGE, num_poses=2, model=DEFAULT_MODEL):
@@ -38,11 +42,11 @@ def detect_poses(landmarker, frame_bgr, roi=None, timestamp_ms=None):
 
     poses = []
     for landmarks in result.pose_landmarks:
-        points = np.array([
-            [lm.x * img_w + x0, lm.y * img_h + y0, lm.visibility]
-            for lm in landmarks
-        ])
-        poses.append(points)
+        rows = []
+        for lm in landmarks:
+            values = {"x": lm.x * img_w + x0, "y": lm.y * img_h + y0, "v": lm.visibility}
+            rows.append([values[axis] for axis in AXES])
+        poses.append(np.array(rows))
     return poses
 
 def draw_poses(frame_bgr, poses, roi=None):
@@ -52,7 +56,6 @@ def draw_poses(frame_bgr, poses, roi=None):
 
     for points in poses:
         for start, end in CONNECTIONS:
-            RIGHT_SIDE = {12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32}
             p1 = (int(points[start, 0]), int(points[start, 1]))
             p2 = (int(points[end, 0]), int(points[end, 1]))
             right = start in RIGHT_SIDE and end in RIGHT_SIDE
@@ -62,6 +65,8 @@ def draw_poses(frame_bgr, poses, roi=None):
             cv2.circle(frame_bgr, (int(px), int(py)), 6, (0, 0, 255), -1)
     return frame_bgr
 
+def points_from_table(df):
+    return df[VALUE_COLUMNS].to_numpy().reshape(len(df), len(LANDMARK_NAMES), len(AXES))
 
 if __name__ == "__main__":
     import sys

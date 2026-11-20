@@ -6,7 +6,7 @@ import pandas as pd
 import cv2 
 
 from shotlab.extract import landmarks_path
-from shotlab.pose import DEFAULT_MODEL, draw_poses
+from shotlab.pose import DEFAULT_MODEL, draw_poses, points_from_table
 from shotlab.roi import get_roi
 from shotlab.video import play
 from shotlab.shots import SHOTS_PATH
@@ -14,7 +14,7 @@ from shotlab.shots import SHOTS_PATH
 
 def load_points(video_path, model=DEFAULT_MODEL):
     df = pd.read_parquet(landmarks_path(video_path, model))
-    return df.iloc[:, 2:].to_numpy().reshape(len(df), 33, 3)
+    return points_from_table(df)
 
 def shot_mask(video_file, n_frames):
     shots = pd.read_csv(SHOTS_PATH)

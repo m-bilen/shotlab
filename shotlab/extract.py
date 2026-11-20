@@ -4,13 +4,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from shotlab.pose import DEFAULT_MODEL, create_landmarker, detect_poses, vision
+from shotlab.pose import DEFAULT_MODEL, VALUE_COLUMNS, create_landmarker, detect_poses, vision
 from shotlab.roi import get_roi
 from shotlab.video import read_frames
 
 OUTPUT_DIR = Path("data/landmarks")
-LANDMARK_NAMES = [lm.name.lower() for lm in vision.PoseLandmark]
-VALUE_COLUMNS = [f"{name}_{axis}" for name in LANDMARK_NAMES for axis in ("x", "y","v")]
+
 
 def landmarks_path(video_file, model=DEFAULT_MODEL):
     return OUTPUT_DIR / f"{Path(video_file).stem}_{model}.parquet"
