@@ -7,12 +7,11 @@ import pandas as pd
 from shotlab.pose import DEFAULT_MODEL, VALUE_COLUMNS, create_landmarker, detect_poses, vision
 from shotlab.roi import get_roi
 from shotlab.video import read_frames
-
-OUTPUT_DIR = Path("data/landmarks")
+from shotlab.config import LANDMARKS_DIR
 
 
 def landmarks_path(video_file, model=DEFAULT_MODEL):
-    return OUTPUT_DIR / f"{Path(video_file).stem}_{model}.parquet"
+    return LANDMARKS_DIR / f"{Path(video_file).stem}_{model}.parquet"
 
 
 def extract_landmarks(video_path, roi, max_frames=None, model=DEFAULT_MODEL):   
@@ -47,7 +46,7 @@ if __name__ == "__main__":
 
     roi = get_roi(video_path.name)
     df = extract_landmarks(str(video_path), roi, max_frames)
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    LANDMARKS_DIR.mkdir(parents=True, exist_ok=True)
     out_path = landmarks_path(video_path)
     df.to_parquet(out_path, index=False)
 

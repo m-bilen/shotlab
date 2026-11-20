@@ -9,7 +9,7 @@ from shotlab.extract import landmarks_path
 from shotlab.pose import DEFAULT_MODEL, draw_poses, points_from_table
 from shotlab.roi import get_roi
 from shotlab.video import play
-from shotlab.shots import SHOTS_PATH
+from shotlab.config import SHOTS_PATH
 
 
 def load_points(video_path, model=DEFAULT_MODEL):

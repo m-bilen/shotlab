@@ -3,8 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
-from shotlab.extract import OUTPUT_DIR
+from shotlab.config import LANDMARKS_DIR, QUALITY_REPORT_PATH
 
 KEY_POINTS = ["right_shoulder", "right_elbow", "right_wrist", "right_hip", "right_knee", "right_ankle"]
 
@@ -36,10 +35,10 @@ def video_report(path):
     return row
 
 if __name__ == "__main__":
-    files = sorted(glob.glob(str(OUTPUT_DIR / "*.parquet")))
+    files = sorted(glob.glob(str(LANDMARKS_DIR / "*.parquet")))
     report = pd.DataFrame({Path(f).stem: video_report(f) for f in files})
     pd.set_option("display.max_columns", None)
     pd.set_option("display.width", 250)
     print(report)
-    report.to_csv("data/quality_report.csv")
+    report.to_csv(QUALITY_REPORT_PATH)
 

@@ -3,12 +3,13 @@ import mediapipe as mp
 import numpy as np 
 from shotlab.video import read_frame, resize_for_display
 from pathlib import Path
+from shotlab.config import MODELS_DIR
 
 from shotlab.roi import get_roi
 
 MODELS = {
-    "full": "models/pose_landmarker_full.task",
-    "heavy": "models/pose_landmarker_heavy.task",
+    "full": str(MODELS_DIR / "pose_landmarker_full.task"),
+    "heavy": str(MODELS_DIR / "pose_landmarker_heavy.task"),
 }
 DEFAULT_MODEL = "heavy"
 vision = mp.tasks.vision

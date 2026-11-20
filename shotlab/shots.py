@@ -5,10 +5,7 @@ import pandas as pd
 
 from shotlab.extract import landmarks_path
 from shotlab.geometry import angle
-
-SESSIONS_PATH = Path("data/sessions.csv")
-MANUAL_PATH = Path("data/release_frames_manual.csv")
-SHOTS_PATH = Path("data/shots.csv")
+from shotlab.config import MANUAL_PATH, SESSIONS_PATH, SHOTS_PATH
 
 MIN_VISIBILITY = 0.5
 MAX_GAP_MS = 120
