@@ -1,7 +1,7 @@
 import cv2 
 import mediapipe as mp
 import numpy as np 
-from shotlab.video import read_frame
+from shotlab.video import read_frame, resize_for_display
 from pathlib import Path
 
 from shotlab.roi import get_roi
@@ -76,6 +76,6 @@ if __name__ == "__main__":
         poses = detect_poses(landmarker, frame, roi)
     print(f"Detected {len(poses)} pose(s)")
     draw_poses(frame, poses, roi)
-    cv2.imshow("ShotLab - pose", cv2.resize(frame, (960, 540)))
+    cv2.imshow("ShotLab - pose", resize_for_display(frame)[0])
     cv2.waitKey(0)
     cv2.destroyAllWindows

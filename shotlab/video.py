@@ -1,5 +1,11 @@
 import cv2
 
+DISPLAY_WIDTH = 960
+
+def resize_for_display(frame, width=DISPLAY_WIDTH):
+    scale = frame.shape[1] / width
+    height = round(frame.shape[0] / scale)
+    return cv2.resize(frame, (width, height)), scale
 
 def video_info(path):
     cap = cv2.VideoCapture(path)
@@ -54,7 +60,7 @@ def play(path, start_s = 0.0, overlay=None):
     for index, t_ms, frame in read_frames(path, start_frame):
         if overlay is not None:
             overlay(frame, index)
-        small = cv2.resize(frame, (960, 540))
+        small, _ = resize_for_display(frame)
         text = f"frame {index}  t={t_ms / 1000:.2f}s"
         cv2.putText(small, text, (20, 40), cv2.FONT_HERSHEY_SIMPLEX,
                     1.0, (0, 255, 255), 2)

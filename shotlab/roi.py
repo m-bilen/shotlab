@@ -3,6 +3,7 @@ from pathlib import Path
 import cv2
 import pandas as pd
 
+from shotlab.video import read_frame, resize_for_display
 from shotlab.geometry import square_roi
 from shotlab.video import read_frame
 
@@ -10,8 +11,7 @@ ROIS_PATH = Path("data/rois.csv")
 
 def select_roi(frame):
     window = "Select shooter area"
-    scale = frame.shape[1] / 960
-    small = cv2.resize(frame, (960, 540))
+    small, scale = resize_for_display(frame)
     x, y, w, h = cv2.selectROI(window, small)
     cv2.destroyWindow(window)
     roi = (int(x * scale), int(y * scale), int(w * scale), int(h * scale))
