@@ -1,7 +1,9 @@
 import numpy as np
 import pandas as pd
+import pytest
 
-from shotlab.shots import detect_shots, find_runs, merge_runs, keep_real_shots
+from shotlab.shots import (add_timing, covering_counts, detect_shots, find_runs,
+                           keep_real_shots, merge_runs, summarize)
 
 
 def test_find_runs():
@@ -49,3 +51,44 @@ def test_detect_shots_same_at_30_fps():
 def test_keep_real_shots():
     shots = pd.DataFrame({"elbow_max": [175.0, 120.0, 150.0, np.nan]})
     assert keep_real_shots(shots)["elbow_max"].tolist() == [175.0, 150.0]
+
+def test_add_timing_sorts_before_gaps():
+    shots = pd.DataFrame({
+        "video_file": ["a.mp4"] * 3,
+        "shooter": ["mehmet"] * 3,
+        "start_ms": [20000.0, 0.0, 10000.0],
+        "end_ms": [21000.0, 1000.0, 11500.0],
+    })
+    result = add_timing(shots)
+    assert result["start_ms"].tolist() == [0.0, 10000.0, 20000.0]
+    assert result["duration_s"].tolist() == pytest.approx([1.0, 1.5, 1.0])
+    assert result["gap_s"].tolist()[1:] == pytest.approx([10.0, 10.0])
+
+def test_summarize_shows_zero_for_empty_session():
+    sessions = pd.DataFrame({
+        "session_id": ["S01", "S02"],
+        "shooter": ["mehmet", "mehmet"],
+        "shots": [2, 1],
+    })
+    shots = add_timing(pd.DataFrame({
+        "video_file": ["a.mp4", "a.mp4"],
+        "session_id": ["S01", "S01"],
+        "shooter": ["mehmet", "mehmet"],
+        "start_ms": [0.0, 10000.0],
+        "end_ms": [1000.0, 11000.0],
+    }))
+    summary = summarize(sessions, shots)
+    assert summary.loc[("S01", "mehmet"), "found"] == 2
+    assert summary.loc[("S02", "mehmet"), "found"] == 0
+
+def test_covering_counts():
+    shots = pd.DataFrame({
+        "video_file": ["a.mp4", "a.mp4", "b.mp4"],
+        "start_frame": [10, 15, 10],
+        "end_frame": [20, 30, 20],
+    })
+    manual = pd.DataFrame({
+        "video_file": ["a.mp4", "a.mp4", "a.mp4", "b.mp4"],
+        "release_frame": [12, 17, 20, 25],
+    })
+    assert covering_counts(shots, manual).tolist() == [1, 2, 1, 0]

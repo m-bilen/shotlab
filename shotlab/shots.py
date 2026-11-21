@@ -42,6 +42,24 @@ def elbow_at(df, frames):
 def keep_real_shots(shots):
     return shots[shots["elbow_max"] >= MIN_ELBOW_MAX].reset_index(drop=True)
 
+def add_timing(shots):
+    shots = shots.sort_values(["video_file", "start_ms"]).reset_index(drop=True)
+    shots["duration_s"] = ((shots["end_ms"] - shots["start_ms"]) / 1000).round(2)
+    group = shots.groupby(["video_file", "shooter"])
+    shots["gap_s"] = (group["start_ms"].diff() / 1000).round(2)
+    return shots
+
+def summarize(sessions, shots): 
+    keys = ["session_id", "shooter"]
+    summary = sessions.groupby(keys)[["shots"]].sum()
+    found = shots.groupby(keys).size()
+    summary["found"] = found.reindex(summary.index, fill_value=0)
+    stats = shots.groupby(keys).agg(
+        median_duration=("duration_s", "median"),
+        median_gap=("gap_s", "median"),
+        short_gaps=("gap_s", lambda g: int((g < 3).sum())),
+    )
+    return summary.join(stats)
 def detect_shots(df):
     t = df["t_ms"].to_numpy()
     runs = merge_runs(find_runs(arm_up_mask(df)), t, MAX_GAP_MS)
@@ -79,32 +97,23 @@ def shots_for_session(row):
     shots.insert(0, "video_file", row.video_file)
     return shots
 
-def manual_inside_shots(shots, manual):
-    inside = 0
+def covering_counts(shots, manual):
+    counts = []
     for r in manual.itertuples():
         same_video = shots["video_file"] == r.video_file
         covers = (shots["start_frame"] <= r.release_frame) & (shots["end_frame"] > r.release_frame)
-        inside += int((same_video & covers).any())
-    return inside
+        counts.append(int((same_video & covers).sum()))
+    return np.array(counts)
 
 if __name__ == "__main__":
     sessions = pd.read_csv(SESSIONS_PATH)
     shots = pd.concat([shots_for_session(r) for r in sessions.itertuples()], ignore_index=True)
-    shots = keep_real_shots(shots)
-    shots["duration_s"] = ((shots["end_ms"] - shots["start_ms"]) / 1000).round(2)
-    group = shots.groupby(["video_file", "shooter"])
-    shots["gap_s"] = (group["start_ms"].diff() / 1000).round(2)  
+    shots = add_timing(keep_real_shots(shots))
     shots.to_csv(SHOTS_PATH, index=False)
 
-    summary = sessions.groupby(["session_id", "shooter"])[["shots"]].sum()
-    summary["found"] = shots.groupby(["session_id", "shooter"]).size()
-    print(summary)
-    stats = shots.groupby(["session_id", "shooter"]).agg(
-        median_duration=("duration_s", "median"),
-        median_gap=("gap_s", "median"),
-        short_gaps=("gap_s", lambda g: int((g < 3).sum())),
-    )
-    print(stats)    
+    pd.set_option("display.width", 200)
+    print(summarize(sessions, shots))
 
-    manual = pd.read_csv(MANUAL_PATH)
-    print(f"Manual release frames inside a shot: {manual_inside_shots(shots, manual)}/{len(manual)}")
+    counts = covering_counts(shots, pd.read_csv(MANUAL_PATH))
+    print(f"Manual release frames inside a shot: {(counts > 0).sum()}/{len(counts)}")
+    print(f"Inside more than one shot: {(counts > 1).sum()}")
