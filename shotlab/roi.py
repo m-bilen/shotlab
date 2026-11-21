@@ -5,7 +5,6 @@ import pandas as pd
 
 from shotlab.video import read_frame, resize_for_display
 from shotlab.geometry import square_roi
-from shotlab.video import read_frame
 from shotlab.config import ROIS_PATH
 
 def select_roi(frame):

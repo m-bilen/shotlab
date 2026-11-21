@@ -84,4 +84,4 @@ if __name__ == "__main__":
     draw_poses(frame, poses, roi)
     cv2.imshow("ShotLab - pose", resize_for_display(frame)[0])
     cv2.waitKey(0)
-    cv2.destroyAllWindows
+    cv2.destroyAllWindows()

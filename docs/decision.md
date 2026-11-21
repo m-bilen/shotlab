@@ -5,13 +5,11 @@
 - **Sequential frame reading:** phone videos have variable frame rate in low light, so seeking by frame number landed on wrong frames.
 - **Heavy pose model:** offline processing, so accuracy matters more than speed (~20 fps on CPU).
 - **Manual make/miss labels instead of Whisper:** Whisper missed isolated one-word labels ("muz"/"elma") spoken 6-9 m from the phone, even with hotwords, VAD and an initial prompt.
-
 - **Shot detection rule:** a shot is a period when the right wrist is above the nose
   (gaps < 120 ms merged, periods < 250 ms dropped) and the elbow opens to at least
   150 degrees. Catching a high pass also lifts the wrist but keeps the elbow bent.
   Elbow angle at the wrist's highest point did not work: the father's wrist peaks
   at his set point, before the arm extends.
-
   - **Manual labels are cross-checked against detection:** 4 of 58 manual release
   frames did not fall inside any detected shot. All 4 were labeling mistakes
   (no shot at that frame) and were corrected. Manual labels are not assumed
