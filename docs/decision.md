@@ -14,3 +14,9 @@
   frames did not fall inside any detected shot. All 4 were labeling mistakes
   (no shot at that frame) and were corrected. Manual labels are not assumed
   to be error-free.
+  - **Pose jump threshold in body units:** a jump is a frame-to-frame speed above
+  30 torso lengths per second (right shoulder to right hip, median per video).
+  Torso length ranged from 99 to 151 px across videos, so a pixel threshold
+  meant a different limit in each video. The 99th percentile of wrist speed was
+  7-9 torso lengths/s in every video, at both 30 and 60 fps. 30 is about twice
+  the fastest real wrist motion in a free throw.
