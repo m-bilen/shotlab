@@ -11,6 +11,7 @@ MIN_VISIBILITY = 0.5
 MAX_GAP_MS = 120
 MIN_LENGTH_MS = 250
 MIN_ELBOW_MAX = 150
+SHORT_GAP_S = 3
 
 def find_runs(mask):
     padded = np.concatenate([[False], mask, [False]])
@@ -49,6 +50,12 @@ def add_timing(shots):
     shots["gap_s"] = (group["start_ms"].diff() / 1000).round(2)
     return shots
 
+def isolated_shots(shots):
+    shots = shots.sort_values(["video_file", "start_ms"]).reset_index(drop=True)
+    next_gap = shots.groupby(["video_file", "shooter"])["gap_s"].shift(-1)
+    near_other = (shots["gap_s"] < SHORT_GAP_S) | (next_gap < SHORT_GAP_S)
+    return shots[~near_other].reset_index(drop=True)
+
 def summarize(sessions, shots): 
     keys = ["session_id", "shooter"]
     summary = sessions.groupby(keys)[["shots"]].sum()
@@ -57,7 +64,7 @@ def summarize(sessions, shots):
     stats = shots.groupby(keys).agg(
         median_duration=("duration_s", "median"),
         median_gap=("gap_s", "median"),
-        short_gaps=("gap_s", lambda g: int((g < 3).sum())),
+        short_gaps=("gap_s", lambda g: int((g < SHORT_GAP_S).sum())),
     )
     return summary.join(stats)
 def detect_shots(df):

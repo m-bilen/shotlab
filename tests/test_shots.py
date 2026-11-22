@@ -3,7 +3,7 @@ import pandas as pd
 import pytest
 
 from shotlab.shots import (add_timing, covering_counts, detect_shots, find_runs,
-                           keep_real_shots, merge_runs, summarize)
+                           keep_real_shots, merge_runs, summarize, isolated_shots)
 
 
 def test_find_runs():
@@ -92,3 +92,12 @@ def test_covering_counts():
         "release_frame": [12, 17, 20, 25],
     })
     assert covering_counts(shots, manual).tolist() == [1, 2, 1, 0]
+
+def test_isolated_shots_drops_both_sides_of_short_gap():
+    shots = add_timing(pd.DataFrame({
+        "video_file": ["a.mp4"] * 4,
+        "shooter": ["mehmet"] * 4,
+        "start_ms": [0.0, 10000.0, 12000.0, 22000.0],
+        "end_ms": [1000.0, 11000.0, 13000.0, 23000.0],
+    }))
+    assert isolated_shots(shots)["start_ms"].tolist() == [0.0, 22000.0]
