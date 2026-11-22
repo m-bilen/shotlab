@@ -1,8 +1,8 @@
 import pandas as pd
 
 from shotlab.config import BALL_PRETRAINED_PATH
+from shotlab.ball import MIN_CONF
 
-CONF = 0.25
 PHASE_BINS = [-400.5, -150, 0, 200.5]
 PHASE_NAMES = ["hand", "release", "flight"]
 
@@ -14,7 +14,7 @@ def add_phase(result):
     result["phase"] = pd.cut(dt, bins=PHASE_BINS, labels=PHASE_NAMES, right=False)
     return result
 
-def detection_rates(result, by, conf=CONF):
+def detection_rates(result, by, conf=MIN_CONF):
     found = result["conf"].fillna(0) >= conf
     rates = result.assign(found=found).groupby(by + ["model", "imgsz"], observed=True)["found"].mean()
     return (rates * 100).round(1).unstack(["model", "imgsz"])

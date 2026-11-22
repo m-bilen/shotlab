@@ -35,3 +35,8 @@ at its end.
   the fingers is clearly visible. If the ball still seems to touch the fingers,
   the next frame is taken. So manual frames may be up to 1 frame later than the
   true release.
+  - **Manual release frames re-checked blind:** 20 shots (all 6 of S02 and 2
+  random shots from every other session) were labeled again without seeing the
+  old labels or the automatic result. Labels made after the rule was written
+  matched within 1 frame (14 of 15 identical). The first 4 labels, made on the
+  first day, were 3-4 frames early. All 20 re-labeled shots use the new label.
