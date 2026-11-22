@@ -1,4 +1,12 @@
+import time
+
 import numpy as np
+import pandas as pd
+
+from shotlab.config import MODELS_DIR, VIDEO_DIR
+from shotlab.extract import landmarks_path
+from shotlab.roi import get_roi
+from shotlab.video import find_video, read_selected_frames
 
 WINDOW_BEFORE_MS = 400
 WINDOW_AFTER_MS = 200
@@ -31,6 +39,46 @@ def detect_ball(model, frame_bgr, region, imgsz=IMGSZ, conf=0.1):
         "ball_y": y + (y1 + y2) / 2,
         "ball_size": ((x2 - x1) + (y2 - y1)) / 2,
     }
+
+def window_plan(shots):
+    rows = []
+    for video_file, video_shots in shots.groupby("video_file"):
+        times = pd.read_parquet(landmarks_path(video_file), columns=["frame", "t_ms"])
+        for shot in video_shots.itertuples():
+            for frame in window_frames(times["frame"], times["t_ms"], shot.wrist_top_frame):
+                rows.append({
+                    "video_file": video_file,
+                    "session_id": shot.session_id,
+                    "shooter": shot.shooter,
+                    "wrist_top_frame": shot.wrist_top_frame,
+                    "frame": frame,
+                })
+    return pd.DataFrame(rows)
+
+def detect_in_plan(plan, configs):
+    from ultralytics import YOLO
+
+    models = {(name, imgsz): YOLO(str(MODELS_DIR / f"{name}.pt")) for name, imgsz in configs}
+    rows = []
+    for video_file, video_plan in plan.groupby("video_file"):
+        region = ball_region(get_roi(video_file))
+        path = str(find_video(video_file, VIDEO_DIR))
+        start = time.time()
+        for index, t_ms, frame in read_selected_frames(path, video_plan["frame"]):
+            for (name, imgsz), model in models.items():
+                t0 = time.perf_counter()
+                ball = detect_ball(model, frame, region, imgsz)
+                rows.append({
+                    "video_file": video_file,
+                    "frame": index,
+                    "t_ms": t_ms,
+                    "model": name,
+                    "imgsz": imgsz,
+                    "ms": (time.perf_counter() - t0) * 1000,
+                    **(ball or {}),
+                })
+        print(f"{video_file}: {len(video_plan)} frames in {time.time() - start:.0f} s")
+    return plan.merge(pd.DataFrame(rows), on=["video_file", "frame"])
 
 if __name__ == "__main__":
     import sys
