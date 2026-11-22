@@ -2,7 +2,7 @@ import cv2
 import pytest
 import numpy as np
 
-from shotlab.video import read_frame, read_frames, resize_for_display
+from shotlab.video import read_frame, read_frames, resize_for_display, read_selected_frames
 
 def make_test_video(path, n_frames):
     writer = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*"MJPG"), 30, (64,48))
@@ -31,3 +31,18 @@ def test_resize_for_display_keeps_aspect_ratio():
     small, scale = resize_for_display(frame)
     assert small.shape[:2] == (720, 960)
     assert scale == pytest.approx(1.5)
+
+def test_read_selected_frames(tmp_path):
+    path = tmp_path / "test.avi"
+    make_test_video(path, 20)
+
+    result = [(index, frame.mean()) for index, _, frame in read_selected_frames(str(path), [12, 3, 3, 7])]
+    assert [index for index, _ in result] == [3, 7, 12]
+    assert [mean for _, mean in result] == pytest.approx([30, 70, 120], abs=3)
+
+def test_read_selected_frames_stops_at_end(tmp_path):
+    path = tmp_path / "test.avi"
+    make_test_video(path, 20)
+
+    indices = [index for index, _, _ in read_selected_frames(str(path), [5, 50])]
+    assert indices == [5]

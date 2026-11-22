@@ -51,6 +51,27 @@ def read_frame(path, index):
         return frame
     raise ValueError(f"Frame {index} not found in { path }")
 
+def read_selected_frames(path, indices):
+    wanted = sorted(set(indices))
+    cap = cv2.VideoCapture(path)
+    if not cap.isOpened():
+        raise FileNotFoundError(f"Could not open video: {path}")
+
+    try:
+        position = 0
+        for target in wanted:
+            while position < target:
+                if not cap.grab():
+                    return
+                position += 1
+            ok, frame = cap.read()
+            if not ok:
+                return
+            t_ms = cap.get(cv2.CAP_PROP_POS_MSEC)
+            yield target, t_ms, frame
+            position += 1
+    finally:
+        cap.release()
 
 def play(path, start_s = 0.0, overlay=None):
     fps = video_info(path)["fps"]

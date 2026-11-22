@@ -24,10 +24,14 @@
   the fastest real wrist motion in a free throw.
   - **Known false shots:** catching a rebound overhead with a straight arm, or
   pointing with the arm up, also opens the elbow past 150 degrees. Shots less
-  than 3 s apart were reviewed: all were a rebound or a gesture next to a real
+than 3 s apart were reviewed: all were a rebound or a gesture next to a real
   shot (about 1-2% of detections). Not fixed in the pose rule: a catch and a
   shot look alike in pose but differ in ball direction. Release detection with
   the ball and manual review ("not a shot") remove them.
 - **Long detections are real shots:** 3-4 s detections were a pause at the set
   point or a held follow-through. Release is searched in the whole window, not
-  at its end.
+at its end.
+- **Release frame (manual):** the first frame where a gap between the ball and
+  the fingers is clearly visible. If the ball still seems to touch the fingers,
+  the next frame is taken. So manual frames may be up to 1 frame later than the
+  true release.
