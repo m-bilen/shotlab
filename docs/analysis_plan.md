@@ -62,7 +62,12 @@ Any change to the analysis is written here first.
 4. **No session-identifying inputs:** camera distance, fps, date, light.
    Used only to check results per group.
 5. **Remove duplicate shots** before any analysis.
-6. **Release detection:** tuned on S02 labels, error reported on other sessions.
+6. **Release detection:** one threshold (ball-to-fingertip distance in ball
+   sizes). Chosen leave-one-session-out on manual release frames: each session
+   is tested with a threshold chosen on the other sessions. Frames after
+   release are used only to find the release moment, never as features. The
+   search window around the wrist peak was set after looking at all manual
+   frames.
 7. **Audio label model:** trained on manual labels of S01-S04. It labels S05-S08,
    then every S05-S08 shot is labeled again by hand without seeing the model's
    label. Disagreements are reviewed a second time. Accuracy is reported on all

@@ -16,9 +16,9 @@
 - [ ] Nov 22-24: Pretrained YOLO, ball detection rate per session
 - [ ] Nov 25-29: Release time from ball trajectory, compared with manual frames
 - [ ] Nov 25-29: Check that release detection rejects the reviewed rebound detections
-- [ ] (+1 week if needed) YOLO fine-tune
-- [ ] Nov 30-Dec 6: Labeling tool (made / missed / not a shot / unclear audio)
-- [ ] Nov 30-Dec 6: Manual make/miss labels for S01-S04
+- [ ] Dec 1-5: YOLO fine-tune: small model with yolo26m accuracy, at least 3x faster
+- [ ] Dec 6-Dec 12: Labeling tool (made / missed / not a shot / unclear audio)
+- [ ] Dec 6-Dec 12: Manual make/miss labels for S01-S04
 - [ ] Dec 7-13: Audio label model, auto-label S05-S08, blind review
 - [ ] Dec 14-20: Features (smoothing, release interpolation, calibration, measurement error) and shot table
 - [ ] Dec 21-Jan 3: Models and evaluation, A1-A4 (see analysis_plan.md)
