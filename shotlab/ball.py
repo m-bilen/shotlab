@@ -8,16 +8,13 @@ from shotlab.extract import landmarks_path
 from shotlab.roi import get_roi
 from shotlab.video import find_video, read_selected_frames
 
-WINDOW_BEFORE_MS = 400
-WINDOW_AFTER_MS = 200
 BALL_CLASS = 32  # "sports ball" in COCO
 IMGSZ = 1088
 
-def window_frames(frames, t_ms, top_frame, before_ms=WINDOW_BEFORE_MS, after_ms=WINDOW_AFTER_MS):
+def frames_between(frames, t_ms, start_ms, end_ms):
     frames = np.asarray(frames)
     t_ms = np.asarray(t_ms)
-    t_top = t_ms[frames == top_frame][0]
-    inside = (t_ms >= t_top - before_ms) & (t_ms <= t_top + after_ms)
+    inside = (t_ms >= start_ms) & (t_ms <= end_ms)
     return frames[inside].tolist()
 
 def ball_region(roi):
@@ -45,8 +42,9 @@ def window_plan(shots):
     for video_file, video_shots in shots.groupby("video_file"):
         times = pd.read_parquet(landmarks_path(video_file), columns=["frame", "t_ms"])
         for shot in video_shots.itertuples():
-            for frame in window_frames(times["frame"], times["t_ms"], shot.wrist_top_frame):
+            for frame in frames_between(times["frame"], times["t_ms"], shot.window_start_ms, shot.window_end_ms):
                 rows.append({
+                   "start_frame": shot.start_frame,
                     "video_file": video_file,
                     "session_id": shot.session_id,
                     "shooter": shot.shooter,

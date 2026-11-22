@@ -78,13 +78,14 @@ def detect_shots(df):
     for start, end in runs:
         top = start + int(np.nanargmin(wrist_y[start:end]))
         rows.append({
+            "wrist_top_ms": float(t[top]),
             "start_frame": int(frame[start]),
             "end_frame": int(frame[end - 1]) + 1,
             "wrist_top_frame": int(frame[top]),
             "start_ms": float(t[start]),
             "end_ms": float(t[end - 1]),
         })
-    columns = ["start_frame", "end_frame", "wrist_top_frame", "start_ms", "end_ms"]
+    columns = ["start_frame", "end_frame", "wrist_top_frame", "start_ms", "end_ms", "wrist_top_ms"]
     return pd.DataFrame(rows, columns=columns)
 
 def shots_for_session(row):

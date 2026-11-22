@@ -1,23 +1,13 @@
 import numpy as np
 import pandas as pd
 
-from shotlab.ball import window_frames, ball_region
+from shotlab.ball import frames_between, ball_region
 from shotlab.ball_report import add_phase, detection_rates
 
-def test_window_frames_60_fps():
+def test_frames_between_uses_time():
     frames = np.arange(100)
-    t_ms = frames * 1000 / 60
-    result = window_frames(frames, t_ms, top_frame=30)
-    assert result[0] == 6
-    assert result[-1] == 42
-
-
-def test_window_frames_same_time_at_30_fps():
-    frames = np.arange(50)
-    t_ms = frames * 1000 / 30
-    result = window_frames(frames, t_ms, top_frame=15)
-    assert result[0] == 3
-    assert result[-1] == 21
+    assert frames_between(frames, frames * 1000 / 60, 100, 700) == list(range(6, 43))
+    assert frames_between(frames, frames * 1000 / 30, 100, 700) == list(range(3, 22))
 
 def test_ball_region_extends_up():
     assert ball_region((300, 500, 600, 600)) == (300, 0, 600, 1100)
