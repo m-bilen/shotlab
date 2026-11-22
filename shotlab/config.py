@@ -13,4 +13,6 @@ QUALITY_REPORT_PATH = DATA_DIR / "quality_report.csv"
 LANDMARKS_DIR = DATA_DIR / "landmarks"
 VIDEO_DIR = Path(os.environ.get("SHOTLAB_VIDEO_DIR", "C:/Shotlab_Video/ana_veri"))
 BALL_PRETRAINED_PATH = DATA_DIR / "ball_pretrained.parquet"
+REVIEWED_PATH = DATA_DIR / "reviewed_shots.csv"
+RELEASE_BALL_PATH = DATA_DIR / "ball_release_eval.parquet"
 

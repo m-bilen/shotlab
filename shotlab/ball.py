@@ -10,6 +10,7 @@ from shotlab.video import find_video, read_selected_frames
 
 BALL_CLASS = 32  # "sports ball" in COCO
 IMGSZ = 1088
+MIN_CONF = 0.25
 
 def frames_between(frames, t_ms, start_ms, end_ms):
     frames = np.asarray(frames)

@@ -105,13 +105,12 @@ def shots_for_session(row):
     shots.insert(0, "video_file", row.video_file)
     return shots
 
+def covering_mask(shots, video_file, frame):
+    same_video = shots["video_file"] == video_file
+    return same_video & (shots["start_frame"] <= frame) & (shots["end_frame"] > frame)
+
 def covering_counts(shots, manual):
-    counts = []
-    for r in manual.itertuples():
-        same_video = shots["video_file"] == r.video_file
-        covers = (shots["start_frame"] <= r.release_frame) & (shots["end_frame"] > r.release_frame)
-        counts.append(int((same_video & covers).sum()))
-    return np.array(counts)
+    return np.array([int(covering_mask(shots, r.video_file, r.release_frame).sum()) for r in manual.itertuples()])
 
 if __name__ == "__main__":
     sessions = pd.read_csv(SESSIONS_PATH)
