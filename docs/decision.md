@@ -40,3 +40,8 @@ at its end.
   old labels or the automatic result. Labels made after the rule was written
   matched within 1 frame (14 of 15 identical). The first 4 labels, made on the
   first day, were 3-4 frames early. All 20 re-labeled shots use the new label.
+  - **Gross label errors found by release detection:** with the original labels,
+  64 of 67 automatic releases were within 2 frames. The 3 misses (all S03) were
+  labeling mistakes: the manual frame showed the follow-through, after the ball
+  was gone. They were re-labeled by the written rule, but not blind (the
+  automatic frame had been seen). S03 had 7 wrong labels in total out of 15.
