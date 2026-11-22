@@ -45,3 +45,10 @@ at its end.
   labeling mistakes: the manual frame showed the follow-through, after the ball
   was gone. They were re-labeled by the written rule, but not blind (the
   automatic frame had been seen). S03 had 7 wrong labels in total out of 15.
+  - **Release from ball-to-fingertip distance:** release is the first moment the
+  ball center is more than 1.2 ball sizes (median per shot) from the right index
+  finger and stays there for 100 ms, interpolated between frames. Ball from
+  pretrained yolo26m at 640 in the shooter region extended up. Search window:
+  detection start -200 ms to detection end +200 ms (a window around the wrist
+  peak missed 3 of 67 releases). The leave-one-session-out threshold was 1.15-1.2
+  in every fold. Rebounds 0/5 and gestures 0/2 got a release, real shots 9/9.

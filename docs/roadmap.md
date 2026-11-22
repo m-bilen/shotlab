@@ -11,18 +11,18 @@
 - [x] Manual release frames: 67 shots, every session and both shooters
 - [x] Quality report independent of camera distance and fps
 - [x] Shot detection reviewed: false shots (rebounds, gestures) and long shots documented
+- [x] Pretrained YOLO comparison: yolo26m at 640 finds the ball in 91% of frames around release
+- [x] Release detection: 67/67 within 2 frames of manual labels, rebounds and gestures rejected
 
 ## Next (January release)
-- [ ] Nov 22-24: Pretrained YOLO, ball detection rate per session
-- [ ] Nov 25-29: Release time from ball trajectory, compared with manual frames
-- [ ] Nov 25-29: Check that release detection rejects the reviewed rebound detections
+
 - [ ] Dec 1-5: YOLO fine-tune: small model with yolo26m accuracy, at least 3x faster
-- [ ] Dec 6-Dec 12: Labeling tool (made / missed / not a shot / unclear audio)
-- [ ] Dec 6-Dec 12: Manual make/miss labels for S01-S04
-- [ ] Dec 7-13: Audio label model, auto-label S05-S08, blind review
-- [ ] Dec 14-20: Features (smoothing, release interpolation, calibration, measurement error) and shot table
-- [ ] Dec 21-Jan 3: Models and evaluation, A1-A4 (see analysis_plan.md)
-- [ ] Jan 4-10: Findings, plots, README, demo GIF
+- [ ] Dec 6-12: Labeling tool (made / missed / not a shot / unclear audio)
+- [ ] Dec 6-12: Manual make/miss labels for S01-S04
+- [ ] Dec 13-19: Audio label model, auto-label S05-S08, blind review
+- [ ] Dec 20-26: Features (smoothing, release interpolation, calibration, measurement error) and shot table
+- [ ] Dec 27-Jan 5: Models and evaluation, A1-A4 (see analysis_plan.md)
+- [ ] Jan 6-12: Findings, plots, README, demo GIF
 
 ## Later
 - [ ] Experiment (A-B-B-A)
