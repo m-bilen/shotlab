@@ -1,3 +1,4 @@
+from pathlib import Path
 import cv2
 
 DISPLAY_WIDTH = 960
@@ -6,6 +7,12 @@ def resize_for_display(frame, width=DISPLAY_WIDTH):
     scale = frame.shape[1] / width
     height = round(frame.shape[0] / scale)
     return cv2.resize(frame, (width, height)), scale
+
+def find_video(video_file, root):
+    matches = list(Path(root).rglob(video_file))
+    if not matches:
+        raise FileNotFoundError(f"{video_file} not found under {root}")
+    return matches[0]
 
 def video_info(path):
     cap = cv2.VideoCapture(path)

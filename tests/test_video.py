@@ -2,7 +2,7 @@ import cv2
 import pytest
 import numpy as np
 
-from shotlab.video import read_frame, read_frames, resize_for_display, read_selected_frames
+from shotlab.video import read_frame, read_frames, resize_for_display, read_selected_frames, find_video
 
 def make_test_video(path, n_frames):
     writer = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*"MJPG"), 30, (64,48))
@@ -46,3 +46,12 @@ def test_read_selected_frames_stops_at_end(tmp_path):
 
     indices = [index for index, _, _ in read_selected_frames(str(path), [5, 50])]
     assert indices == [5]
+
+def test_find_video_searches_subfolders(tmp_path):
+    (tmp_path / "2026-11-12").mkdir()
+    target = tmp_path / "2026-11-12" / "a.mp4"
+    target.write_bytes(b"")
+
+    assert find_video("a.mp4", tmp_path) == target
+    with pytest.raises(FileNotFoundError):
+        find_video("b.mp4", tmp_path)
