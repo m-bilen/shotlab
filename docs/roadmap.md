@@ -17,6 +17,7 @@
 ## Next (January release)
 
 - [ ] Dec 1-5: YOLO fine-tune: small model with yolo26m accuracy, at least 3x faster
+- [ ] Dec 1-5: Release for all shots with the fine-tuned model, 30 random shots checked blind by hand
 - [ ] Dec 6-12: Labeling tool (made / missed / not a shot / unclear audio)
 - [ ] Dec 6-12: Manual make/miss labels for S01-S04
 - [ ] Dec 13-19: Audio label model, auto-label S05-S08, blind review
