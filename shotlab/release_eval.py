@@ -15,6 +15,11 @@ def manual_shots(shots, manual):
         rows.append({**shot.to_dict(), "release_frame": r.release_frame})
     return pd.DataFrame(rows)
 
+def add_release_window(shots):
+    return shots.assign(
+        window_start_ms=shots["start_ms"] - MARGIN_MS,
+        window_end_ms=shots["end_ms"] + MARGIN_MS,
+    )
 
 def reviewed_shots(shots, reviewed):
     result = shots.merge(reviewed, on=["video_file", "start_frame"])
@@ -29,6 +34,7 @@ def eval_shots(shots, manual, reviewed):
         window_start_ms=selected["start_ms"] - MARGIN_MS,
         window_end_ms=selected["end_ms"] + MARGIN_MS,
     )
+    return add_release_window(selected)
 
 
 if __name__ == "__main__":
