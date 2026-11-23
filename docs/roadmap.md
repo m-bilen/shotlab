@@ -16,16 +16,12 @@
 
 ## Next (January release)
 
-- [ ] Dec 1-5: YOLO fine-tune: small model with yolo26m accuracy, at least 3x faster
-- [ ] Dec 1-5: Release for all shots with the fine-tuned model, 30 random shots checked blind by hand
-- [ ] Dec 6-12: Labeling tool (made / missed / not a shot / unclear audio)
-- [ ] Dec 6-12: Manual make/miss labels for S01-S04
-- [ ] Dec 13-19: Audio label model, auto-label S05-S08, blind review
-- [ ] Dec 20-26: Features (smoothing, release interpolation, calibration, measurement error) and shot table
-- [ ] Dec 27-Jan 5: Models and evaluation, A1-A4 (see analysis_plan.md)
+- [ ] Dec 1-5: YOLO fine-tune: small model with yolo26m accuracy on CPU, trained on Colab
+- [ ] Dec 6-12: Labeling tool with sound (made / missed / not a shot / can't tell)
+- [ ] Dec 6-12: Make/miss labels for all sessions, 10% re-labeled blind
+- [ ] Dec 13-19: Features (smoothing, release interpolation, calibration, measurement error) and shot table
+- [ ] Dec 20-Jan 5: Models and evaluation, A1-A4 (see analysis_plan.md)
 - [ ] Jan 6-12: Findings, plots, README, demo GIF
-
-## Later
 - [ ] Experiment (A-B-B-A)
 - [ ] Automatic make/miss from ball and rim
 - [ ] FastAPI + SQLite backend
@@ -33,3 +29,4 @@
 - [ ] Docker image and docker compose for the backend
 - [ ] React results page on GitHub Pages
 - [ ] Wrap pose landmarker and its running mode in a class (when a third use appears)
+- [ ] Audio make/miss model (not needed while every shot is labeled by hand)

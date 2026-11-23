@@ -48,6 +48,9 @@ Any change to the analysis is written here first.
 - Report results separately for 30 fps and 60 fps sessions.
 - Smallest reliably detectable effect with ~900 shots: about 8-10
   percentage points in make rate.
+- Expected effect is small: a free throw without a jump is a consistent motion.
+  A null result is reported as such, together with the smallest effect we could
+  have detected. A4 (consistency) is the most likely place for a signal.
 
 ## 4. Leakage rules
 
@@ -68,10 +71,11 @@ Any change to the analysis is written here first.
    release are used only to find the release moment, never as features. The
    search window around the wrist peak was set after looking at all manual
    frames.
-7. **Audio label model:** trained on manual labels of S01-S04. It labels S05-S08,
-   then every S05-S08 shot is labeled again by hand without seeing the model's
-   label. Disagreements are reviewed a second time. Accuracy is reported on all
-   S05-S08 shots against the hand labels.
+7. **Make/miss labels:** every detected shot is labeled by hand in a labeling
+   tool that plays the video with sound (the spoken "muz"/"elma" and the ball).
+   A random 10% of shots, stratified by session, is labeled again blind. The
+   disagreement rate is reported as the label error rate. Disagreements are
+   reviewed.
 8. **YOLO fine-tune:** validation set is a whole held-out video,
    never random frames from training videos.
 9. **Experiment (step 9)** is the final out-of-sample test of A1.

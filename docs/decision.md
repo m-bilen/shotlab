@@ -52,3 +52,10 @@ at its end.
   detection start -200 ms to detection end +200 ms (a window around the wrist
   peak missed 3 of 67 releases). The leave-one-session-out threshold was 1.15-1.2
   in every fold. Rebounds 0/5 and gestures 0/2 got a release, real shots 9/9.
+  - **No audio label model:** every shot is labeled by hand, because make/miss is
+  the target and a model's confident mistakes would enter the analysis without
+  anyone seeing them. With that rule an audio model saves no labeling, so it was
+  dropped. A blind re-label of a random 10% measures label errors instead.
+  - **Fine-tune goal is CPU speed:** the full dataset with yolo26m takes about
+  11 hours on this laptop's CPU. A fine-tuned small model should do it in about
+  2 hours. Training runs on Colab.
