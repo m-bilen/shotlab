@@ -3,7 +3,7 @@ import pandas as pd
 
 from shotlab.config import BALL_CROPS_DIR, BALL_LABELS_PATH, BALL_PSEUDO_PATH
 
-DISPLAY_HEIGHT = 800
+DISPLAY_HEIGHT = 700
 WINDOW = "ShotLab - ball review"
 ENTER = 13
 COLUMNS = ["image", "ball", "ball_x", "ball_y", "ball_size", "source"]
@@ -54,6 +54,8 @@ def ask(row):
     image = cv2.imread(str(BALL_CROPS_DIR / row.image))
     scale = DISPLAY_HEIGHT / image.shape[0]
     shown = draw(image, row, scale)
+    cv2.namedWindow(WINDOW)
+    cv2.moveWindow(WINDOW, 0, 0)    
     cv2.imshow(WINDOW, shown)
     while True:
         key = cv2.waitKey(0) & 0xFF
