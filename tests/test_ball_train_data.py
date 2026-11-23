@@ -1,6 +1,6 @@
 import pandas as pd
 
-from shotlab.ball_train_data import HOLDOUT_VIDEO, split_shots, spread_index, sample_shots
+from shotlab.ball_train_data import HOLDOUT_VIDEO, split_shots, spread_index, sample_shots, train_window
 
 def test_spread_index():
     assert spread_index(10, 4) == [0, 3, 6, 9]
@@ -23,3 +23,8 @@ def test_sample_shots_counts_per_group():
     sampled = sample_shots(train, val)
     assert sampled[sampled["split"] == "train"].groupby("session_id").size().tolist() == [14, 14]
     assert sampled[sampled["split"] == "val"].groupby("shooter").size().tolist() == [20, 20]
+
+def test_train_window_follows_shot_start():
+    shots = pd.DataFrame({"start_ms": [1000.0], "end_ms": [3000.0]})
+    window = train_window(shots)
+    assert window[["window_start_ms", "window_end_ms"]].values.tolist() == [[700.0, 1500.0]]

@@ -59,3 +59,7 @@ at its end.
   - **Fine-tune goal is CPU speed:** the full dataset with yolo26m takes about
   11 hours on this laptop's CPU. A fine-tuned small model should do it in about
   2 hours. Training runs on Colab.
+  - **Training frames for ball fine-tuning:** taken from shot start -300 ms to
+  +500 ms, not the whole detection. In the whole detection, more than half of
+  the frames came after the ball had left the region (teacher found a ball in
+  46% of them). Release is about 100 ms after shot start.

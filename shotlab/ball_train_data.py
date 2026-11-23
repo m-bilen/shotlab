@@ -3,7 +3,7 @@ import pandas as pd
 
 from shotlab.ball import window_plan
 from shotlab.config import BALL_TRAIN_PLAN_PATH, MANUAL_PATH, REVIEWED_PATH, SHOTS_PATH
-from shotlab.release_eval import add_release_window, eval_shots
+from shotlab.release_eval import  eval_shots
 from shotlab.shots import isolated_shots
 
 HOLDOUT_VIDEO = "VID_20261115_111103.mp4"
@@ -11,6 +11,8 @@ TRAIN_SHOTS_PER_GROUP = 14
 VAL_SHOTS_PER_SHOOTER = 20
 FRAMES_PER_SHOT = 8
 SEED = 1
+TRAIN_BEFORE_MS = 300
+TRAIN_AFTER_MS = 500
 
 
 
@@ -41,11 +43,16 @@ def sample_shots(train, val, seed=SEED):
     val = val.groupby("shooter").sample(n=VAL_SHOTS_PER_SHOOTER, random_state=seed)
     return pd.concat([train.assign(split="train"), val.assign(split="val")], ignore_index=True)
 
+def train_window(shots):
+    return shots.assign(
+        window_start_ms=shots["start_ms"] - TRAIN_BEFORE_MS,
+        window_end_ms=shots["start_ms"] + TRAIN_AFTER_MS,
+    )
 
 def training_plan(sampled):
     parts = []
     for split, shots in sampled.groupby("split"):
-        parts.append(thin_plan(window_plan(add_release_window(shots))).assign(split=split))
+        parts.append(thin_plan(window_plan(train_window(shots))).assign(split=split))
     return pd.concat(parts, ignore_index=True)
 
 
