@@ -1,7 +1,8 @@
 import numpy as np
 import pandas as pd
+import pytest
 
-from shotlab.ball import frames_between, ball_region
+from shotlab.ball import frames_between, ball_region, ball_class
 from shotlab.ball_report import add_phase, detection_rates
 
 def test_frames_between_uses_time():
@@ -32,3 +33,14 @@ def test_detection_rates_counts_missing_as_not_found():
         "conf": [0.9, 0.1, None, 0.5],
     })
     assert detection_rates(result, ["session_id"]).iloc[0, 0] == 50.0
+
+class FakeModel:
+    def __init__(self, names):
+        self.names = names
+
+
+def test_ball_class_finds_ball_in_any_model():
+    assert ball_class(FakeModel({0: "person", 32: "sports ball"})) == 32
+    assert ball_class(FakeModel({0: "ball"})) == 0
+    with pytest.raises(ValueError):
+        ball_class(FakeModel({0: "person"}))

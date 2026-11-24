@@ -8,9 +8,17 @@ from shotlab.extract import landmarks_path
 from shotlab.roi import get_roi
 from shotlab.video import find_video, read_selected_frames
 
-BALL_CLASS = 32  # "sports ball" in COCO
+BALL_NAMES = ("sports ball", "ball")
 IMGSZ = 1088
 MIN_CONF = 0.25
+
+
+def ball_class(model):
+    for index, name in model.names.items():
+        if name in BALL_NAMES:
+            return index
+    raise ValueError(f"No ball class in model: {model.names}")
+
 
 def frames_between(frames, t_ms, start_ms, end_ms):
     frames = np.asarray(frames)
@@ -26,7 +34,7 @@ def ball_region(roi):
 def detect_ball(model, frame_bgr, region, imgsz=IMGSZ, conf=0.1):
     x, y, w, h = region
     crop = frame_bgr[y:y + h, x:x + w]
-    result = model.predict(crop, imgsz=imgsz, classes=[BALL_CLASS], conf=conf, verbose=False)[0]
+    result = model.predict(crop, imgsz=imgsz, classes=[ball_class(model)], conf=conf, verbose=False)[0]
     if len(result.boxes) == 0:
         return None
     best = int(result.boxes.conf.argmax())

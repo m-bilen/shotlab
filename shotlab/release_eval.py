@@ -44,6 +44,8 @@ if __name__ == "__main__":
     plan = window_plan(selected)
     print(f"{len(plan)} frames from {len(selected)} shots, model {model}")
     result = detect_in_plan(plan, [(model, 640)])
+    if "conf" not in result.columns:
+        raise ValueError(f"{model} found no ball in any frame")
     path = release_ball_path(model)
     result.to_parquet(path, index=False)
     print(f"Saved {len(result)} rows to {path}")
