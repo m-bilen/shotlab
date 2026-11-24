@@ -9,3 +9,5 @@ data/raw/
 models/
 data/landmarks/
 data/ball_crops/
+data/ball_dataset/
+data/ball_dataset.zip

@@ -19,4 +19,5 @@ BALL_TRAIN_PLAN_PATH = DATA_DIR / "ball_train_plan.csv"
 BALL_CROPS_DIR = DATA_DIR / "ball_crops"
 BALL_PSEUDO_PATH = DATA_DIR / "ball_pseudo_labels.csv"
 BALL_LABELS_PATH = DATA_DIR / "ball_labels.csv"
+BALL_DATASET_DIR = DATA_DIR / "ball_dataset"
 
