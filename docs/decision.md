@@ -63,3 +63,17 @@ at its end.
   +500 ms, not the whole detection. In the whole detection, more than half of
   the frames came after the ball had left the region (teacher found a ball in
   46% of them). Release is about 100 ms after shot start.
+  - **Fine-tuned yolo26n for the ball:** trained on 1568 reviewed crops from
+  S01-S07, 100 epochs on a Colab T4 with default settings; the best epoch was
+  picked on 320 crops from S08. On the release exam it matched yolo26m: 67/67
+  within 2 frames (95% interval 94.6-100%), 64/64 on blind labels only, a release
+  for 0 of 7 rebounds and gestures, 7/7 on S08 which it never trained on.
+  Release threshold 1.15 (1.15-1.2 leave-one-session-out). Same CPU, same 190
+  crops: 52 ms vs 228 ms per image (4.4x); with video reading included, about
+  3-3.5x.
+- **Teacher quality:** on frames with a ball, the teacher's box was kept for 83%,
+  redrawn for 9% and missing for 8%. It almost never boxed a ball that was not
+  there (3 frames).
+- **Ball class from the model:** the code first asked for COCO class 32 ("sports
+  ball"). The fine-tuned model has a single class 0, so it found nothing. The
+  ball class is now read from the model's own class names.

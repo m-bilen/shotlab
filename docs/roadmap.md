@@ -13,11 +13,10 @@
 - [x] Shot detection reviewed: false shots (rebounds, gestures) and long shots documented
 - [x] Pretrained YOLO comparison: yolo26m at 640 finds the ball in 91% of frames around release
 - [x] Release detection: 67/67 within 2 frames of manual labels, rebounds and gestures rejected
+- [x] Fine-tuned yolo26n: same release accuracy as yolo26m, 4.4x faster on CPU
 
 ## Next (January release)
-
-- [ ] Dec 1-5: YOLO fine-tune: small model with yolo26m accuracy on CPU, trained on Colab
-- [ ] Dec 1-5: Release for all shots with the fine-tuned model, 30 random shots checked blind by hand
+- [ ] Nov 25-26: Release for all shots with the fine-tuned model, 30 random shots checked blind by hand
 - [ ] Dec 6-12: Labeling tool with sound (made / missed / not a shot / can't tell)
 - [ ] Dec 6-12: Make/miss labels for all sessions, 10% re-labeled blind
 - [ ] Dec 13-19: Features (smoothing, release interpolation, calibration, measurement error) and shot table
