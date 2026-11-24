@@ -2,8 +2,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
+
 from shotlab.release import release_time, shot_distance
-from shotlab.release_report import choose_threshold, score, session_summary
+from shotlab.release_report import choose_threshold, score, session_summary, blind_only, overall
 
 
 def test_release_time_interpolates_between_frames():
@@ -67,3 +68,20 @@ def test_session_summary_counts_frames_by_fps():
     assert summary.loc["S01", "missed"] == 1
     assert summary.loc["S01", "within_2"] == 50
     assert summary.loc["S05", "within_2"] == 50
+
+
+def test_blind_only_drops_relabeled_shots():
+    tested = pd.DataFrame({
+        "video_file": ["VID_20261112_104955.mp4", "VID_20261112_104955.mp4"],
+        "release_frame": [41220, 5000],
+    })
+    assert blind_only(tested)["release_frame"].tolist() == [5000]
+
+
+def test_overall_counts_within_two_frames():
+    tested = pd.DataFrame({
+        "video_file": ["a.mp4", "a.mp4", "a.mp4"],
+        "error_ms": [10.0, 50.0, np.nan],
+    })
+    fps = pd.Series({"a.mp4": 60})
+    assert overall(tested, fps) == {"shots": 3, "missed": 1, "within_2": 1}

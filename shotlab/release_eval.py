@@ -1,10 +1,10 @@
 import pandas as pd
+import sys
 
 from shotlab.ball import detect_in_plan, window_plan
-from shotlab.config import MANUAL_PATH, RELEASE_BALL_PATH, REVIEWED_PATH, SHOTS_PATH
+from shotlab.config import MANUAL_PATH, release_ball_path, REVIEWED_PATH, SHOTS_PATH
 from shotlab.shots import covering_mask
 
-CONFIGS = [("yolo26m", 640)]
 MARGIN_MS = 200
 
 
@@ -38,10 +38,12 @@ def eval_shots(shots, manual, reviewed):
 
 
 if __name__ == "__main__":
+    model = sys.argv[1] if len(sys.argv) > 1 else "yolo26m"
     shots = pd.read_csv(SHOTS_PATH)
     selected = eval_shots(shots, pd.read_csv(MANUAL_PATH), pd.read_csv(REVIEWED_PATH))
     plan = window_plan(selected)
-    print(f"{len(plan)} frames from {len(selected)} shots")
-    result = detect_in_plan(plan, CONFIGS)
-    result.to_parquet(RELEASE_BALL_PATH, index=False)
-    print(f"Saved {len(result)} rows to {RELEASE_BALL_PATH}")
+    print(f"{len(plan)} frames from {len(selected)} shots, model {model}")
+    result = detect_in_plan(plan, [(model, 640)])
+    path = release_ball_path(model)
+    result.to_parquet(path, index=False)
+    print(f"Saved {len(result)} rows to {path}")

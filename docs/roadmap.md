@@ -17,6 +17,7 @@
 ## Next (January release)
 
 - [ ] Dec 1-5: YOLO fine-tune: small model with yolo26m accuracy on CPU, trained on Colab
+- [ ] Dec 1-5: Release for all shots with the fine-tuned model, 30 random shots checked blind by hand
 - [ ] Dec 6-12: Labeling tool with sound (made / missed / not a shot / can't tell)
 - [ ] Dec 6-12: Make/miss labels for all sessions, 10% re-labeled blind
 - [ ] Dec 13-19: Features (smoothing, release interpolation, calibration, measurement error) and shot table

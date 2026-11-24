@@ -14,7 +14,10 @@ LANDMARKS_DIR = DATA_DIR / "landmarks"
 VIDEO_DIR = Path(os.environ.get("SHOTLAB_VIDEO_DIR", "C:/Shotlab_Video/ana_veri"))
 BALL_PRETRAINED_PATH = DATA_DIR / "ball_pretrained.parquet"
 REVIEWED_PATH = DATA_DIR / "reviewed_shots.csv"
-RELEASE_BALL_PATH = DATA_DIR / "ball_release_eval.parquet"
+
+def release_ball_path(model):
+    return DATA_DIR / f"ball_release_eval_{model}.parquet"
+
 BALL_TRAIN_PLAN_PATH = DATA_DIR / "ball_train_plan.csv"
 BALL_CROPS_DIR = DATA_DIR / "ball_crops"
 BALL_PSEUDO_PATH = DATA_DIR / "ball_pseudo_labels.csv"

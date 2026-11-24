@@ -82,3 +82,15 @@ Any change to the analysis is written here first.
 
 Allowed inputs (known before release): release mechanics, shot number
 within the session (warm-up / fatigue), shooter (A4 only).
+
+## Fine-tuned ball model (decided before testing)
+
+- Test: the release exam (67 manual shots, human labels) and the 16 reviewed
+  shots. None of these shots were used in training.
+- Success: within 2 frames about as often as yolo26m (67/67), reported with a
+  95% interval and shot by shot; the same on the 64 blind labels only; a release
+  for 0 of the 7 rebounds and gestures; at least 3x faster than yolo26m per frame
+  on the same CPU.
+- The release threshold is chosen again leave-one-session-out for the new model.
+- Box metrics on S08 are secondary: those labels started from the teacher's
+  boxes, and S08 was used to pick the best epoch.

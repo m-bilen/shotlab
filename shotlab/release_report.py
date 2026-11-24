@@ -1,16 +1,22 @@
 import numpy as np
 import pandas as pd
+import sys
 
-from shotlab.config import MANUAL_PATH, RELEASE_BALL_PATH, REVIEWED_PATH, SESSIONS_PATH, SHOTS_PATH
+from shotlab.config import MANUAL_PATH, release_ball_path, REVIEWED_PATH, SESSIONS_PATH, SHOTS_PATH
 from shotlab.extract import landmarks_path
 from shotlab.release import release_time, shot_distance
 from shotlab.release_eval import manual_shots, reviewed_shots
 
 THRESHOLDS = np.round(np.arange(0.5, 2.01, 0.05), 2)
 MAX_ERROR_MS = 100
+NOT_BLIND = [
+    ("VID_20261112_104955.mp4", 90049),
+    ("VID_20261112_104955.mp4", 41220),
+    ("VID_20261112_104955.mp4", 10139),
+]
 
-def load_eval_frames():
-    ball = pd.read_parquet(RELEASE_BALL_PATH)
+def load_eval_frames(model):
+    ball = pd.read_parquet(release_ball_path(model))
     parts = []
     for video_file, video_ball in ball.groupby("video_file"):
         columns = ["frame", "right_index_x", "right_index_y"]
@@ -71,9 +77,23 @@ def release_check(reviewed, frames, threshold):
     check = check.assign(release_found=check["release_ms"].notna())
     return check.groupby("label")["release_found"].agg(["sum", "size"])
 
+def blind_only(tested):
+    keys = zip(tested["video_file"], tested["release_frame"])
+    return tested[[key not in NOT_BLIND for key in keys]]
+
+
+def overall(tested, fps):
+    error_frames = tested["error_ms"] * tested["video_file"].map(fps) / 1000
+    return {
+        "shots": len(tested),
+        "missed": int(tested["error_ms"].isna().sum()),
+        "within_2": int((error_frames.abs() <= 2).sum()),
+    }
+
 if __name__ == "__main__":
+    model = sys.argv[1] if len(sys.argv) > 1 else "yolo26m"
     shots = pd.read_csv(SHOTS_PATH)
-    frames = load_eval_frames()
+    frames = load_eval_frames(model)
     manual = manual_shots(shots, pd.read_csv(MANUAL_PATH))
     reviewed = reviewed_shots(shots, pd.read_csv(REVIEWED_PATH))
     fps = pd.read_csv(SESSIONS_PATH).drop_duplicates("video_file").set_index("video_file")["fps"]
@@ -82,6 +102,9 @@ if __name__ == "__main__":
     final = choose_threshold(errors)
 
     pd.set_option("display.width", 200)
+    print(f"Model {model}: median {frames['ms'].median():.0f} ms per frame on this CPU")
     print(session_summary(tested, fps))
+    print(f"All shots: {overall(tested, fps)}")
+    print(f"Blind labels only: {overall(blind_only(tested), fps)}")
     print(f"\nThreshold chosen on all sessions: {final}")
     print(release_check(reviewed, frames, final))
