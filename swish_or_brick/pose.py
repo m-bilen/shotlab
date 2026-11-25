@@ -82,6 +82,6 @@ if __name__ == "__main__":
         poses = detect_poses(landmarker, frame, roi)
     print(f"Detected {len(poses)} pose(s)")
     draw_poses(frame, poses, roi)
-    cv2.imshow("ShotLab - pose", resize_for_display(frame)[0])
+    cv2.imshow("Swish or Brick - pose", resize_for_display(frame)[0])
     cv2.waitKey(0)
     cv2.destroyAllWindows()

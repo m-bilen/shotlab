@@ -92,7 +92,7 @@ def play(path, start_s = 0.0, overlay=None):
         text = f"frame {index}  t={t_ms / 1000:.2f}s"
         cv2.putText(small, text, (20, 40), cv2.FONT_HERSHEY_SIMPLEX,
                     1.0, (0, 255, 255), 2)
-        cv2.imshow("ShotLab", small)
+        cv2.imshow("Swish or Brick", small)
         key = cv2.waitKey(0 if paused else delay_ms) & 0xFF
         if key == ord("q"):
             break

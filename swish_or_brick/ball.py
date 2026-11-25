@@ -112,6 +112,6 @@ if __name__ == "__main__":
     if ball is not None:
         center = (int(ball["ball_x"]), int(ball["ball_y"]))
         cv2.circle(frame, center, int(ball["ball_size"] / 2), (0, 255, 255), 3)
-    cv2.imshow("ShotLab - ball", resize_for_display(frame)[0])
+    cv2.imshow("Swish or Brick - ball", resize_for_display(frame)[0])
     cv2.waitKey(0)
     cv2.destroyAllWindows()

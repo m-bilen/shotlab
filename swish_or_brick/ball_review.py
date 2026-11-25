@@ -4,7 +4,7 @@ import pandas as pd
 from swish_or_brick.config import BALL_CROPS_DIR, BALL_LABELS_PATH, BALL_PSEUDO_PATH
 
 DISPLAY_HEIGHT = 700
-WINDOW = "ShotLab - ball review"
+WINDOW = "Swish or Brick - ball review"
 ENTER = 13
 COLUMNS = ["image", "ball", "ball_x", "ball_y", "ball_size", "source"]
 
