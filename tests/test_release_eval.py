@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from shotlab.release_eval import manual_shots, reviewed_shots
+from swish_or_brick.release_eval import manual_shots, reviewed_shots
 
 
 def test_manual_shots_finds_covering_shot():

@@ -2,9 +2,9 @@ import numpy as np
 import pandas as pd
 import sys
 
-from shotlab.config import MANUAL_PATH, release_ball_path, REVIEWED_PATH, SESSIONS_PATH, SHOTS_PATH
-from shotlab.release import release_time, shot_distance, add_fingertip
-from shotlab.release_eval import manual_shots, reviewed_shots
+from swish_or_brick.config import MANUAL_PATH, release_ball_path, REVIEWED_PATH, SESSIONS_PATH, SHOTS_PATH
+from swish_or_brick.release import release_time, shot_distance, add_fingertip
+from swish_or_brick.release_eval import manual_shots, reviewed_shots
 
 THRESHOLDS = np.round(np.arange(0.5, 2.01, 0.05), 2)
 MAX_ERROR_MS = 100

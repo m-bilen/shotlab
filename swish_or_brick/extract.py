@@ -4,10 +4,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from shotlab.pose import DEFAULT_MODEL, VALUE_COLUMNS, create_landmarker, detect_poses, vision
-from shotlab.roi import get_roi
-from shotlab.video import read_frames
-from shotlab.config import LANDMARKS_DIR
+from swish_or_brick.pose import DEFAULT_MODEL, VALUE_COLUMNS, create_landmarker, detect_poses, vision
+from swish_or_brick.roi import get_roi
+from swish_or_brick.video import read_frames
+from swish_or_brick.config import LANDMARKS_DIR
 
 
 def landmarks_path(video_file, model=DEFAULT_MODEL):

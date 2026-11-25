@@ -1,7 +1,7 @@
 import cv2
 import pandas as pd
 
-from shotlab.config import BALL_CROPS_DIR, BALL_LABELS_PATH, BALL_PSEUDO_PATH
+from swish_or_brick.config import BALL_CROPS_DIR, BALL_LABELS_PATH, BALL_PSEUDO_PATH
 
 DISPLAY_HEIGHT = 700
 WINDOW = "ShotLab - ball review"

@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from shotlab.pose import AXES, LANDMARK_NAMES, VALUE_COLUMNS, points_from_table
+from swish_or_brick.pose import AXES, LANDMARK_NAMES, VALUE_COLUMNS, points_from_table
 
 def test_value_columns_layout():
     assert len(VALUE_COLUMNS) == len(LANDMARK_NAMES) * len(AXES)

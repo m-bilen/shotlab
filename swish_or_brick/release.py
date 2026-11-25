@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
 
-from shotlab.extract import landmarks_path
-from shotlab.ball import MIN_CONF
+from swish_or_brick.extract import landmarks_path
+from swish_or_brick.ball import MIN_CONF
 
 HOLD_MS = 100
 

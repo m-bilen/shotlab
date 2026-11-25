@@ -1,9 +1,9 @@
 import pandas as pd
 import sys
 
-from shotlab.ball import detect_in_plan, window_plan
-from shotlab.config import MANUAL_PATH, release_ball_path, REVIEWED_PATH, SHOTS_PATH
-from shotlab.shots import covering_mask
+from swish_or_brick.ball import detect_in_plan, window_plan
+from swish_or_brick.config import MANUAL_PATH, release_ball_path, REVIEWED_PATH, SHOTS_PATH
+from swish_or_brick.shots import covering_mask
 
 MARGIN_MS = 200
 

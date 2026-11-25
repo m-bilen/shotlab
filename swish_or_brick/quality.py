@@ -3,8 +3,8 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from shotlab.config import LANDMARKS_DIR, QUALITY_REPORT_PATH
-from shotlab.pose import DEFAULT_MODEL
+from swish_or_brick.config import LANDMARKS_DIR, QUALITY_REPORT_PATH
+from swish_or_brick.pose import DEFAULT_MODEL
 
 KEY_POINTS = ["right_shoulder", "right_elbow", "right_wrist", "right_hip", "right_knee", "right_ankle"]
 JUMP_SPEED = 30

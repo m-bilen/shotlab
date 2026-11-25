@@ -3,9 +3,9 @@ from pathlib import Path
 
 import pandas as pd
 
-from shotlab.ball import detect_in_plan, window_plan
-from shotlab.config import BALL_ALL_DIR, SHOTS_PATH
-from shotlab.release_eval import add_release_window
+from swish_or_brick.ball import detect_in_plan, window_plan
+from swish_or_brick.config import BALL_ALL_DIR, SHOTS_PATH
+from swish_or_brick.release_eval import add_release_window
 
 MODEL = "yolo26n_ball"
 

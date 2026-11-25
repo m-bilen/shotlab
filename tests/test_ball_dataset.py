@@ -1,6 +1,6 @@
 import pandas as pd
 
-from shotlab.ball_dataset import label_text, yolo_line
+from swish_or_brick.ball_dataset import label_text, yolo_line
 
 
 def test_yolo_line_normalizes_box():

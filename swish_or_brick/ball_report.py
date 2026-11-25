@@ -1,7 +1,7 @@
 import pandas as pd
 
-from shotlab.config import BALL_PRETRAINED_PATH
-from shotlab.ball import MIN_CONF
+from swish_or_brick.config import BALL_PRETRAINED_PATH
+from swish_or_brick.ball import MIN_CONF
 
 PHASE_BINS = [-400.5, -150, 0, 200.5]
 PHASE_NAMES = ["hand", "release", "flight"]

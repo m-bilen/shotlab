@@ -2,7 +2,7 @@ import cv2
 import pytest
 import numpy as np
 
-from shotlab.video import read_frame, read_frames, resize_for_display, read_selected_frames, find_video
+from swish_or_brick.video import read_frame, read_frames, resize_for_display, read_selected_frames, find_video
 
 def make_test_video(path, n_frames):
     writer = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*"MJPG"), 30, (64,48))

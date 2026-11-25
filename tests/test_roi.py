@@ -1,4 +1,4 @@
-from shotlab.roi import get_roi, save_roi
+from swish_or_brick.roi import get_roi, save_roi
 
 def test_save_and_get_roi(tmp_path):
     path = tmp_path / "rois.csv"

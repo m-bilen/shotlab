@@ -1,8 +1,8 @@
 import pandas as pd
 
-from shotlab.ball import detect_in_plan, window_plan
-from shotlab.config import BALL_PRETRAINED_PATH, SHOTS_PATH
-from shotlab.shots import isolated_shots
+from swish_or_brick.ball import detect_in_plan, window_plan
+from swish_or_brick.config import BALL_PRETRAINED_PATH, SHOTS_PATH
+from swish_or_brick.shots import isolated_shots
 
 WINDOW_BEFORE_MS = 400
 WINDOW_AFTER_MS = 200

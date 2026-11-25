@@ -3,9 +3,9 @@ import pandas as pd
 import pytest
 
 
-from shotlab.release import release_time, shot_distance
-from shotlab.release_report import choose_threshold, score, session_summary, blind_only, overall
-from shotlab.releases import release_counts
+from swish_or_brick.release import release_time, shot_distance
+from swish_or_brick.release_report import choose_threshold, score, session_summary, blind_only, overall
+from swish_or_brick.releases import release_counts
 
 
 def test_release_time_interpolates_between_frames():

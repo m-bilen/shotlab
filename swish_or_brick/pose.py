@@ -1,11 +1,11 @@
 import cv2 
 import mediapipe as mp
 import numpy as np 
-from shotlab.video import read_frame, resize_for_display
+from swish_or_brick.video import read_frame, resize_for_display
 from pathlib import Path
-from shotlab.config import MODELS_DIR
+from swish_or_brick.config import MODELS_DIR
 
-from shotlab.roi import get_roi
+from swish_or_brick.roi import get_roi
 
 MODELS = {
     "full": str(MODELS_DIR / "pose_landmarker_full.task"),

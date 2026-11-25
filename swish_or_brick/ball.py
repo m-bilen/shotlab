@@ -3,10 +3,10 @@ import time
 import numpy as np
 import pandas as pd
 
-from shotlab.config import MODELS_DIR, VIDEO_DIR
-from shotlab.extract import landmarks_path
-from shotlab.roi import get_roi
-from shotlab.video import find_video, read_selected_frames
+from swish_or_brick.config import MODELS_DIR, VIDEO_DIR
+from swish_or_brick.extract import landmarks_path
+from swish_or_brick.roi import get_roi
+from swish_or_brick.video import find_video, read_selected_frames
 
 BALL_NAMES = ("sports ball", "ball")
 IMGSZ = 1088
@@ -94,9 +94,9 @@ if __name__ == "__main__":
     import cv2
     from ultralytics import YOLO
 
-    from shotlab.config import MODELS_DIR
-    from shotlab.roi import get_roi
-    from shotlab.video import read_frame, resize_for_display
+    from swish_or_brick.config import MODELS_DIR
+    from swish_or_brick.roi import get_roi
+    from swish_or_brick.video import read_frame, resize_for_display
 
     video_path, frame_index = sys.argv[1], int(sys.argv[2])
     model_name = sys.argv[3] if len(sys.argv) > 3 else "yolo26s"

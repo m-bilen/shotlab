@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 import numpy as np
-from shotlab.quality import frame_interval_stats, jump_rate
+from swish_or_brick.quality import frame_interval_stats, jump_rate
 
 def test_frame_interval_stats_finds_gap():
     df = pd.DataFrame({"t_ms": [0, 16.7, 33.3, 66.7, 83.3]})

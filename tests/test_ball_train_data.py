@@ -1,6 +1,6 @@
 import pandas as pd
 
-from shotlab.ball_train_data import HOLDOUT_VIDEO, split_shots, spread_index, sample_shots, train_window
+from swish_or_brick.ball_train_data import HOLDOUT_VIDEO, split_shots, spread_index, sample_shots, train_window
 
 def test_spread_index():
     assert spread_index(10, 4) == [0, 3, 6, 9]

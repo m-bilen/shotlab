@@ -1,8 +1,8 @@
 import pandas as pd
 
-from shotlab.config import BALL_ALL_DIR, RELEASES_PATH, SESSIONS_PATH, SHOTS_PATH
-from shotlab.release import add_fingertip
-from shotlab.release_report import releases
+from swish_or_brick.config import BALL_ALL_DIR, RELEASES_PATH, SESSIONS_PATH, SHOTS_PATH
+from swish_or_brick.release import add_fingertip
+from swish_or_brick.release_report import releases
 
 RELEASE_THRESHOLD = 1.15
 

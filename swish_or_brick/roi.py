@@ -3,9 +3,9 @@ from pathlib import Path
 import cv2
 import pandas as pd
 
-from shotlab.video import read_frame, resize_for_display
-from shotlab.geometry import square_roi
-from shotlab.config import ROIS_PATH
+from swish_or_brick.video import read_frame, resize_for_display
+from swish_or_brick.geometry import square_roi
+from swish_or_brick.config import ROIS_PATH
 
 def select_roi(frame):
     window = "Select shooter area"
@@ -32,7 +32,7 @@ def get_roi(video_file, path=ROIS_PATH):
     rois = load_rois(path)
     row = rois[rois["video_file"] == video_file]
     if row.empty:
-        raise KeyError(f"No ROI for {video_file}. Run: python -m shotlab.roi <video> <frame>")
+        raise KeyError(f"No ROI for {video_file}. Run: python -m swish_or_brick.roi <video> <frame>")
     r = row.iloc[0]
     return (int(r["x"]), int(r["y"]), int(r["size"]), int(r["size"]))
 

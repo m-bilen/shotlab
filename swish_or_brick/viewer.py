@@ -5,11 +5,11 @@ import numpy as np
 import pandas as pd
 import cv2 
 
-from shotlab.extract import landmarks_path
-from shotlab.pose import DEFAULT_MODEL, draw_poses, points_from_table
-from shotlab.roi import get_roi
-from shotlab.video import play
-from shotlab.config import SHOTS_PATH
+from swish_or_brick.extract import landmarks_path
+from swish_or_brick.pose import DEFAULT_MODEL, draw_poses, points_from_table
+from swish_or_brick.roi import get_roi
+from swish_or_brick.video import play
+from swish_or_brick.config import SHOTS_PATH
 
 
 def load_points(video_path, model=DEFAULT_MODEL):

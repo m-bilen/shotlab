@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
 
-from shotlab.ball import window_plan
-from shotlab.config import BALL_TRAIN_PLAN_PATH, MANUAL_PATH, REVIEWED_PATH, SHOTS_PATH
-from shotlab.release_eval import  eval_shots
-from shotlab.shots import isolated_shots
+from swish_or_brick.ball import window_plan
+from swish_or_brick.config import BALL_TRAIN_PLAN_PATH, MANUAL_PATH, REVIEWED_PATH, SHOTS_PATH
+from swish_or_brick.release_eval import  eval_shots
+from swish_or_brick.shots import isolated_shots
 
 HOLDOUT_VIDEO = "VID_20261115_111103.mp4"
 TRAIN_SHOTS_PER_GROUP = 14

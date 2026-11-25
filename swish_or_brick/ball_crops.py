@@ -3,10 +3,10 @@ from pathlib import Path
 import cv2
 import pandas as pd
 
-from shotlab.ball import ball_region, detect_ball
-from shotlab.config import BALL_CROPS_DIR, BALL_PSEUDO_PATH, BALL_TRAIN_PLAN_PATH, MODELS_DIR, VIDEO_DIR
-from shotlab.roi import get_roi
-from shotlab.video import find_video, read_selected_frames
+from swish_or_brick.ball import ball_region, detect_ball
+from swish_or_brick.config import BALL_CROPS_DIR, BALL_PSEUDO_PATH, BALL_TRAIN_PLAN_PATH, MODELS_DIR, VIDEO_DIR
+from swish_or_brick.roi import get_roi
+from swish_or_brick.video import find_video, read_selected_frames
 
 TEACHER = "yolo26m"
 TEACHER_IMGSZ = 640

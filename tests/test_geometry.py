@@ -1,4 +1,4 @@
-from shotlab.geometry import angle, square_roi
+from swish_or_brick.geometry import angle, square_roi
 import pytest
 
 def test_square_roi_keeps_square_box():

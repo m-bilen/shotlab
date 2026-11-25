@@ -1,6 +1,6 @@
 import pytest
 
-from shotlab.ball_speed import speed_summary
+from swish_or_brick.ball_speed import speed_summary
 
 
 def test_speed_summary_uses_medians():

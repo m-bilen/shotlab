@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from shotlab.shots import (add_timing, covering_counts, detect_shots, find_runs,
+from swish_or_brick.shots import (add_timing, covering_counts, detect_shots, find_runs,
                            keep_real_shots, merge_runs, summarize, isolated_shots)
 
 

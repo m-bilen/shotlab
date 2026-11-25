@@ -3,7 +3,7 @@ import shutil
 import cv2
 import pandas as pd
 
-from shotlab.config import BALL_CROPS_DIR, BALL_DATASET_DIR, BALL_LABELS_PATH
+from swish_or_brick.config import BALL_CROPS_DIR, BALL_DATASET_DIR, BALL_LABELS_PATH
 
 COLAB_PATH = "/content/ball_dataset"
 

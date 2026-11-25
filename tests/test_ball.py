@@ -2,8 +2,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from shotlab.ball import frames_between, ball_region, ball_class
-from shotlab.ball_report import add_phase, detection_rates
+from swish_or_brick.ball import frames_between, ball_region, ball_class
+from swish_or_brick.ball_report import add_phase, detection_rates
 
 def test_frames_between_uses_time():
     frames = np.arange(100)

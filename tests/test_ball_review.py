@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 
-from shotlab.ball_review import box_from_roi, remaining
+from swish_or_brick.ball_review import box_from_roi, remaining
 
 
 def test_box_from_roi_undoes_display_scale():

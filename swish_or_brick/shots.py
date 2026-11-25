@@ -3,9 +3,9 @@
 import numpy as np
 import pandas as pd
 
-from shotlab.extract import landmarks_path
-from shotlab.geometry import angle
-from shotlab.config import MANUAL_PATH, SESSIONS_PATH, SHOTS_PATH
+from swish_or_brick.extract import landmarks_path
+from swish_or_brick.geometry import angle
+from swish_or_brick.config import MANUAL_PATH, SESSIONS_PATH, SHOTS_PATH
 
 MIN_VISIBILITY = 0.5
 MAX_GAP_MS = 120

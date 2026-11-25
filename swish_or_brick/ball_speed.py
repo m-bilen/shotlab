@@ -3,8 +3,8 @@ import time
 import cv2
 import numpy as np
 
-from shotlab.ball import detect_ball
-from shotlab.config import BALL_CROPS_DIR, MODELS_DIR
+from swish_or_brick.ball import detect_ball
+from swish_or_brick.config import BALL_CROPS_DIR, MODELS_DIR
 
 MODELS = ["yolo26m", "yolo26n_ball"]
 N_IMAGES = 200
