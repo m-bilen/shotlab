@@ -14,14 +14,17 @@
 - [x] Pretrained YOLO comparison: yolo26m at 640 finds the ball in 91% of frames around release
 - [x] Release detection: 67/67 within 2 frames of manual labels, rebounds and gestures rejected
 - [x] Fine-tuned yolo26n: same release accuracy as yolo26m, 4.4x faster on CPU
-- [x] Release for all shots: 2033 found, 40/40 blind check within 2 frames
+- [x] Release for all shots: 2033 found, 36/36 unseen shots within 2 frames in a blind check
 
 ## Next (January release)
-- [ ] Dec 6-12: Labeling tool with sound (made / missed / not a shot / can't tell)
-- [ ] Dec 6-12: Make/miss labels for all sessions, 10% re-labeled blind
-- [ ] Dec 13-19: Features (smoothing, release interpolation, calibration, measurement error) and shot table
-- [ ] Dec 20-Jan 5: Models and evaluation, A1-A4 (see analysis_plan.md)
+- [ ] Nov 26-Dec 2: Labeling tool with sound (made / missed / not a shot / can't tell)
+- [ ] Nov 26-Dec 2: Make/miss labels for all sessions, 10% re-labeled blind
+- [ ] Dec 3-9: Features (smoothing, release interpolation, calibration, measurement error) and shot table
+- [ ] Dec 10-Jan 5: Models and evaluation, A1-A5 (see analysis_plan.md)
 - [ ] Jan 6-12: Findings, plots, README, demo GIF
+
+## Later
+- [ ] "Try it on your video": one command that finds shots and releases in a new video and writes an HTML consistency report
 - [ ] Experiment (A-B-B-A)
 - [ ] Automatic make/miss from ball and rim
 - [ ] FastAPI + SQLite backend
