@@ -62,7 +62,10 @@ at its end.
   - **Training frames for ball fine-tuning:** taken from shot start -300 ms to
   +500 ms, not the whole detection. In the whole detection, more than half of
   the frames came after the ball had left the region (teacher found a ball in
-  46% of them). Release is about 100 ms after shot start.
+  46% of them).Release is about 80 ms after shot start for Mehmet but about 480 ms for his
+  father, who holds the ball at the set point. So the training window caught few
+  frames after the father's release. The student still passed all 20 of his
+  exam shots.
   - **Fine-tuned yolo26n for the ball:** trained on 1568 reviewed crops from
   S01-S07, 100 epochs on a Colab T4 with default settings; the best epoch was
   picked on 320 crops from S08. On the release exam it matched yolo26m: 67/67
@@ -77,3 +80,10 @@ at its end.
 - **Ball class from the model:** the code first asked for COCO class 32 ("sports
   ball"). The fine-tuned model has a single class 0, so it found nothing. The
   ball class is now read from the model's own class names.
+  - **Full-run audit:** 9 releases came less than 3 s after another release, in
+  6 sequences. In all 6, a rebound had got a release, so rebound rejection is
+  not perfect (0/5 on the exam was a small sample). Every rebound that gets a
+  release sits within 3 s of a real shot, so this check finds them, and make/miss
+  labeling marks them "not a shot". All 12 detections without a release that
+  were not near another detection were warm-up moves or rebounds: no real shot
+  lost there.
