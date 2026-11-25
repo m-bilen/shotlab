@@ -87,3 +87,8 @@ at its end.
   labeling marks them "not a shot". All 12 detections without a release that
   were not near another detection were warm-up moves or rebounds: no real shot
   lost there.
+  - **Full-run release check (blind):** 40 random released shots (20 per shooter)
+  outside the exam and the audit, labeled blind. 40/40 within 2 frames (95%
+  interval 91-100%), all within 1.4 frames, 20/20 per shooter. With the exam,
+  107/107. Two labels were typos (an extra or a missing digit); they were
+  re-labeled from the video, not copied from the automatic result.

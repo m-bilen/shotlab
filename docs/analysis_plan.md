@@ -94,3 +94,11 @@ within the session (warm-up / fatigue), shooter (A4 only).
 - The release threshold is chosen again leave-one-session-out for the new model.
 - Box metrics on S08 are secondary: those labels started from the teacher's
   boxes, and S08 was used to pick the best epoch.
+  
+## Full-run release check (decided before looking)
+
+- 40 random released shots (20 per shooter), outside the exam and the audit,
+  labeled blind by the written rule.
+- Accept if at least 36 of 40 are within 2 frames and at least 17 of 20 per
+  shooter. Otherwise look for a pattern; any fix is checked on a new random
+  sample, not on these 40.
