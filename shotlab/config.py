@@ -23,4 +23,6 @@ BALL_CROPS_DIR = DATA_DIR / "ball_crops"
 BALL_PSEUDO_PATH = DATA_DIR / "ball_pseudo_labels.csv"
 BALL_LABELS_PATH = DATA_DIR / "ball_labels.csv"
 BALL_DATASET_DIR = DATA_DIR / "ball_dataset"
+BALL_ALL_DIR = DATA_DIR / "ball_all"
+RELEASES_PATH = DATA_DIR / "releases.csv"
 

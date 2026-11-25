@@ -1,5 +1,7 @@
 import numpy as np
+import pandas as pd
 
+from shotlab.extract import landmarks_path
 from shotlab.ball import MIN_CONF
 
 HOLD_MS = 100
@@ -23,3 +25,11 @@ def release_time(t_ms, dist, threshold, hold_ms=HOLD_MS):
             if (after >= threshold).all():
                 return t[i - 1] + (threshold - d[i - 1]) / (d[i] - d[i - 1]) * (t[i] - t[i - 1])
     return None
+
+def add_fingertip(ball):
+    parts = []
+    for video_file, video_ball in ball.groupby("video_file"):
+        columns = ["frame", "right_index_x", "right_index_y"]
+        landmarks = pd.read_parquet(landmarks_path(video_file), columns=columns)
+        parts.append(video_ball.merge(landmarks, on="frame"))
+    return pd.concat(parts, ignore_index=True)

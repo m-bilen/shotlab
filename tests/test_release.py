@@ -5,6 +5,7 @@ import pytest
 
 from shotlab.release import release_time, shot_distance
 from shotlab.release_report import choose_threshold, score, session_summary, blind_only, overall
+from shotlab.releases import release_counts
 
 
 def test_release_time_interpolates_between_frames():
@@ -85,3 +86,14 @@ def test_overall_counts_within_two_frames():
     })
     fps = pd.Series({"a.mp4": 60})
     assert overall(tested, fps) == {"shots": 3, "missed": 1, "within_2": 1}
+
+def test_release_counts_per_session():
+    sessions = pd.DataFrame({"session_id": ["S01", "S02"], "shooter": "mehmet", "shots": [3, 2]})
+    result = pd.DataFrame({
+        "session_id": ["S01", "S01", "S01", "S01"],
+        "shooter": "mehmet",
+        "release_ms": [100.0, 200.0, np.nan, 300.0],
+    })
+    table = release_counts(sessions, result)
+    assert table.loc[("S01", "mehmet")].tolist() == [3, 4, 3]
+    assert table.loc[("S02", "mehmet")].tolist() == [2, 0, 0]

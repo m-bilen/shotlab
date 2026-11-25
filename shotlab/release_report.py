@@ -3,8 +3,7 @@ import pandas as pd
 import sys
 
 from shotlab.config import MANUAL_PATH, release_ball_path, REVIEWED_PATH, SESSIONS_PATH, SHOTS_PATH
-from shotlab.extract import landmarks_path
-from shotlab.release import release_time, shot_distance
+from shotlab.release import release_time, shot_distance, add_fingertip
 from shotlab.release_eval import manual_shots, reviewed_shots
 
 THRESHOLDS = np.round(np.arange(0.5, 2.01, 0.05), 2)
@@ -16,13 +15,7 @@ NOT_BLIND = [
 ]
 
 def load_eval_frames(model):
-    ball = pd.read_parquet(release_ball_path(model))
-    parts = []
-    for video_file, video_ball in ball.groupby("video_file"):
-        columns = ["frame", "right_index_x", "right_index_y"]
-        landmarks = pd.read_parquet(landmarks_path(video_file), columns=columns)
-        parts.append(video_ball.merge(landmarks, on="frame"))
-    return pd.concat(parts, ignore_index=True)
+    return add_fingertip(pd.read_parquet(release_ball_path(model)))
 
 def releases(frames, threshold):
     rows = []
