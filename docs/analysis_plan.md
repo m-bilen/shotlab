@@ -94,7 +94,6 @@ within the session (warm-up / fatigue), shooter (A4 only).
 - The release threshold is chosen again leave-one-session-out for the new model.
 - Box metrics on S08 are secondary: those labels started from the teacher's
   boxes, and S08 was used to pick the best epoch.
-  
 ## Full-run release check (decided before looking)
 
 - 40 random released shots (20 per shooter), outside the exam and the audit,
@@ -102,3 +101,21 @@ within the session (warm-up / fatigue), shooter (A4 only).
 - Accept if at least 36 of 40 are within 2 frames and at least 17 of 20 per
   shooter. Otherwise look for a pattern; any fix is checked on a new random
   sample, not on these 40.
+
+  ## A5: Hot hand (decided before make/miss labels exist)
+
+- Question: is a shot more likely to go in after a make than after a miss?
+- Main measure (per shooter): P(make | previous make) - P(make | previous miss),
+  within sessions, using consecutive real shots only.
+- Test: permutation test that shuffles makes and misses within blocks of 20
+  shots in each session, 10,000 times. This keeps slow trends (warm-up, fatigue)
+  and accounts for the streak selection bias (Miller and Sanjurjo, 2018).
+- Secondary: after 2 and 3 makes in a row vs after 2 and 3 misses (fewer shots,
+  weaker test).
+- Rhythm: compare the time to the next shot after makes and after misses. Then
+  the hot hand difference with time to next shot controlled, and, after misses
+  only, whether a short wait predicts a make. These show whether an effect could
+  come from rhythm rather than confidence; they are not proof of a cause.
+- With about 1000 shots per shooter, a difference of about 9-10 points would
+  likely be detected; smaller ones may be missed. A null result is reported
+  with this limit.

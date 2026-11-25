@@ -87,8 +87,10 @@ at its end.
   labeling marks them "not a shot". All 12 detections without a release that
   were not near another detection were warm-up moves or rebounds: no real shot
   lost there.
-  - **Full-run release check (blind):** 40 random released shots (20 per shooter)
-  outside the exam and the audit, labeled blind. 40/40 within 2 frames (95%
-  interval 91-100%), all within 1.4 frames, 20/20 per shooter. With the exam,
-  107/107. Two labels were typos (an extra or a missing digit); they were
-  re-labeled from the video, not copied from the automatic result.
+- **Full-run release check (blind):** 40 random released shots (20 per shooter)
+  outside the exam and the audit, labeled blind. 4 of them turned out to be in
+  the ball training set (the sample did not exclude it). On the other 36:
+  36/36 within 2 frames (95% interval 90-100%), 18/18 per shooter, all within
+  1.4 frames. The 4 training shots were also within 2 frames. With the exam,
+  103/103 unseen shots. Two labels were typos (an extra or a missing digit);
+  they were re-labeled from the video, not copied from the automatic result.
