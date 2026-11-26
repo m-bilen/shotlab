@@ -9,7 +9,7 @@ from swish_or_brick.video import find_video
 
 LABELS = {"made", "missed", "not_a_shot", "cant_tell", "conflict"}
 BEFORE_S = 1.0
-AFTER_RELEASE_S = 3.0
+AFTER_RELEASE_S = 5.0
 COLUMNS = ["shot_id", "label", "labeled_at"]
 
 
@@ -24,7 +24,8 @@ def shots_to_label(releases):
 
 def read_labels(path):
     if path.exists():
-        return pd.read_csv(path)
+        labels = pd.read_csv(path)
+        return labels.drop_duplicates("shot_id", keep="last")
     return pd.DataFrame(columns=COLUMNS)
 
 def remaining(shots, labels):

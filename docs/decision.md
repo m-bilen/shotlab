@@ -138,3 +138,10 @@
   information) had been agreed on but never written into the plan. Added as A6
   and M1-M3. Model settings fixed with no tuning; "not a shot" no longer breaks
   hot hand sequences; re-labels at least a day after first labels.
+
+  ## Label corrections
+2026-11-26. Corrections are added as new rows to make_miss_labels.csv; the
+last row for a shot counts (read_labels). First labels stay in the file. In
+S01 Mehmet, 3 rebound detections (audit_shots.csv) had taken the next shot's
+outcome; corrected to not_a_shot. Clips now run 5 s after release (was 3 s:
+the word often came later).

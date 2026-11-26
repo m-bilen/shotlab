@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from swish_or_brick.labeler import add_label, create_app, read_labels, shots_to_label, undo_last
+from swish_or_brick.labeler import add_label, create_app, read_labels, shots_to_label, undo_last,AFTER_RELEASE_S
 
 
 def make_releases():
@@ -30,7 +30,15 @@ def test_api_serves_next_unlabeled_shot(tmp_path):
     client = create_app(shots_to_label(make_releases()), tmp_path / "labels.csv", {}).test_client()
     first = client.get("/api/next").get_json()
     assert first["shot_id"] == "a.mp4:10"
-    assert (first["start_s"], first["end_s"]) == pytest.approx((0.0, 4.1))
+    assert (first["start_s"], first["end_s"]) == pytest.approx((0.0, 1.1 + AFTER_RELEASE_S))
     after = client.post("/api/label", json={"shot_id": "a.mp4:10", "label": "made"}).get_json()
     assert after["shot_id"] == "b.mp4:5"
     assert client.post("/api/label", json={"shot_id": "a.mp4:10", "label": "maybe"}).status_code == 400
+
+def test_read_labels_keeps_last_label(tmp_path):
+    path = tmp_path / "labels.csv"
+    add_label(path, "a.mp4:10", "made")
+    add_label(path, "a.mp4:10", "not_a_shot")
+    labels = read_labels(path)
+    assert len(labels) == 1
+    assert labels["label"].iloc[0] == "not_a_shot"

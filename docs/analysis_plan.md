@@ -294,8 +294,6 @@ in the training set; 36/36 of the rest within 2 frames (decision.md).
 
 ## Deviations
 
-## Deviations
-
 - 2026-11-26, before any label existed: two cases the plan did not cover.
   (1) When two words are said ("muz... elma"), the last one counts: it was a
   correction at recording time. (2) When the word and a clear video disagree
