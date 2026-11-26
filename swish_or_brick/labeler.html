@@ -8,10 +8,12 @@
   video { max-width: 100%; max-height: 80vh; }
   #info { font-size: 22px; margin: 8px; }
   #keys { color: #999; margin: 8px; }
+  #marker { color: #f33; font-size: 28px; font-weight: bold; height: 34px; visibility: hidden; }
 </style>
 </head>
 <body>
 <div id="info">loading</div>
+<div id="marker">● THIS ONE</div>
 <video id="video" preload="auto"></video>
 <div id="time"></div>
 <div id="keys">m made · e missed · x not a shot · u can't tell · w word and video disagree · space replay · → 2 s more · backspace undo</div>
@@ -20,6 +22,7 @@ const KEYS = { m: "made", e: "missed", x: "not_a_shot", u: "cant_tell", w: "conf
 const video = document.getElementById("video");
 const info = document.getElementById("info");
 const time = document.getElementById("time");
+const marker = document.getElementById("marker");
 let shot = null;
 let busy = false;
 let endAt = 0;
@@ -60,6 +63,8 @@ async function call(method, url, body) {
 
 video.addEventListener("timeupdate", () => {
   if (!shot) return;
+  const t = video.currentTime;
+  marker.style.visibility = t >= shot.detected_s && t <= shot.release_s + 0.3 ? "visible" : "hidden";
   time.textContent = `${video.currentTime.toFixed(2)} s   (clip ${shot.start_s.toFixed(2)} - ${shot.end_s.toFixed(2)})`;
   if (video.currentTime >= endAt) video.pause();
 });

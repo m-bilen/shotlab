@@ -48,8 +48,9 @@ def clip(shot):
         "video_file": shot["video_file"],
         "start_s": shot["start_ms"] / 1000 - BEFORE_S,
         "end_s": shot["release_ms"] / 1000 + AFTER_RELEASE_S,
+        "detected_s": shot["start_ms"] / 1000,
+        "release_s": shot["release_ms"] / 1000,
     }
-
 
 def create_app(shots, labels_path, video_paths):
     app = Flask(__name__)
