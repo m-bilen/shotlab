@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Swish or Brick - labels</title>
+<style>
+  body { background: #111; color: #eee; font-family: sans-serif; margin: 0; text-align: center; }
+  video { max-width: 100%; max-height: 80vh; }
+  #info { font-size: 22px; margin: 8px; }
+  #keys { color: #999; margin: 8px; }
+</style>
+</head>
+<body>
+<div id="info">loading</div>
+<video id="video" preload="auto"></video>
+<div id="time"></div>
+<div id="keys">m made · e missed · x not a shot · u can't tell · space replay · → → 2 s more · backspace undo</div>
+<script>
+const KEYS = { m: "made", e: "missed", x: "not_a_shot", u: "cant_tell" };
+const video = document.getElementById("video");
+const info = document.getElementById("info");
+const time = document.getElementById("time");
+let shot = null;
+let busy = false;
+let endAt = 0;
+function play() {
+  endAt = shot.end_s;
+  video.currentTime = shot.start_s;
+  video.play();
+}
+
+function show(data) {
+  if (data.done) {
+    shot = null;
+    video.pause();
+    info.textContent = "All done";
+    return;
+  }
+  shot = data;
+  info.textContent = `${data.total - data.left + 1} / ${data.total}`;
+  const src = `/video/${data.video_file}`;
+  if (video.getAttribute("src") !== src) {
+    video.src = src;
+    video.addEventListener("loadedmetadata", play, { once: true });
+  } else {
+    play();
+  }
+}
+
+async function call(method, url, body) {
+  busy = true;
+  const response = await fetch(url, {
+    method,
+    headers: { "Content-Type": "application/json" },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  show(await response.json());
+  busy = false;
+}
+
+video.addEventListener("timeupdate", () => {
+  if (!shot) return;
+  time.textContent = `${video.currentTime.toFixed(2)} s   (clip ${shot.start_s.toFixed(2)} - ${shot.end_s.toFixed(2)})`;
+  if (video.currentTime >= endAt) video.pause();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (busy) return;
+  if (event.key === "Backspace") return call("POST", "/api/undo");
+  if (!shot) return;
+  if (event.key in KEYS) return call("POST", "/api/label", { shot_id: shot.shot_id, label: KEYS[event.key] });
+  if (event.key === " ") { event.preventDefault(); play(); }
+  if (event.key === "ArrowRight") { endAt = video.currentTime + 2; video.play(); }
+});
+
+call("GET", "/api/next");
+</script>
+</body>
+</html>

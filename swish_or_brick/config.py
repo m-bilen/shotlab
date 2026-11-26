@@ -25,4 +25,5 @@ BALL_LABELS_PATH = DATA_DIR / "ball_labels.csv"
 BALL_DATASET_DIR = DATA_DIR / "ball_dataset"
 BALL_ALL_DIR = DATA_DIR / "ball_all"
 RELEASES_PATH = DATA_DIR / "releases.csv"
+MAKE_MISS_PATH = DATA_DIR / "make_miss_data_labels.csv"
 
