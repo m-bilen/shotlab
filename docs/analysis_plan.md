@@ -167,7 +167,7 @@ left out and checked separately (section 7).
 - Rhythm (secondary, not proof of a cause): time to the next shot after makes
   vs after misses; the hot hand difference with time to the next shot as a
   covariate; after misses only, whether a short wait predicts a make.
-  
+
 ### A6. Warm-up and fatigue (secondary)
 - Make rate over shot number: logistic regression make ~ shot number + one term
   per session, per shooter. Two-sided p from shuffling make/miss within each
@@ -294,4 +294,11 @@ in the training set; 36/36 of the rest within 2 frames (decision.md).
 
 ## Deviations
 
-None yet.
+## Deviations
+
+- 2026-11-26, before any label existed: two cases the plan did not cover.
+  (1) When two words are said ("muz... elma"), the last one counts: it was a
+  correction at recording time. (2) When the word and a clear video disagree
+  with no correction, the shot gets a "conflict" label, is reviewed frame by
+  frame after first labeling, then labeled made or missed. The number of
+  conflicts is reported as wrong words said at recording time.

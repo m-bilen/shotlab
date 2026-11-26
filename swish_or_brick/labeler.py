@@ -7,7 +7,7 @@ from flask import Flask, abort, jsonify, request, send_file
 from swish_or_brick.config import MAKE_MISS_PATH, RELEASES_PATH, VIDEO_DIR
 from swish_or_brick.video import find_video
 
-LABELS = {"made", "missed", "not_a_shot", "cant_tell"}
+LABELS = {"made", "missed", "not_a_shot", "cant_tell", "conflict"}
 BEFORE_S = 1.0
 AFTER_RELEASE_S = 3.0
 COLUMNS = ["shot_id", "label", "labeled_at"]
