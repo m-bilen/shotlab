@@ -147,7 +147,7 @@ left out and checked separately (section 7).
   95% interval from resampling blocks.
 - This is an inference model on all sessions, not a prediction of held-out
   sessions, so the session-shooter terms do not break rule 4.
-- Secondary: |z| per feature;z from the median and MAD of the shooter's other sessions instead
+- Secondary: |z| per feature; z from the median and MAD of the shooter's other sessions instead
   (keeps day-level form shifts, mixed with camera angle); Mahalanobis distance
   from the shooter-session typical shot with robust covariance (does not count
   the correlated arm features three times).
@@ -167,6 +167,7 @@ left out and checked separately (section 7).
 - Rhythm (secondary, not proof of a cause): time to the next shot after makes
   vs after misses; the hot hand difference with time to the next shot as a
   covariate; after misses only, whether a short wait predicts a make.
+  
 ### A6. Warm-up and fatigue (secondary)
 - Make rate over shot number: logistic regression make ~ shot number + one term
   per session, per shooter. Two-sided p from shuffling make/miss within each
@@ -209,7 +210,7 @@ uses no feature-outcome information).
   feature, ~12-14 points with Holm.
 - A4: ~3 points per 1 SD of mean |z|.
 - A5: ~9 points.
-A6 and M1-M3 are secondary; no correction.
+- A6 and M1-M3 are secondary; no correction.
 
 Holm over the 7 features in A1b, separately for each shooter. A1a, A4 and A5
 have a single primary test and no correction. Secondary and exploratory
@@ -218,10 +219,11 @@ results are not corrected and are labeled so.
 ## 6. Leakage rules
 
 1. **Split by session, never by random shots.** Shots in a session share light,
-   camera and fatigue.
+   camera and fatigue. M1 breaks this on purpose, only to show its cost.
 2. **Only movement up to release is a feature.** Frames after release are used
    only to find the release moment. The detector's `duration_s` is not a
-   feature (it runs past release).
+   feature (it runs past release). M2 breaks this on purpose, only to show its
+   cost.
 3. **Fitted steps use training sessions only:** scaling, bins, models.
    Planned exceptions that use held-out features but never labels:
    session-centered values, shooter-session z, Mahalanobis distance.
@@ -236,8 +238,8 @@ results are not corrected and are labeled so.
 8. **Check samples:** any sample for a check excludes every shot used in
    training, tuning or an earlier check, and this is done in code.
 
-Allowed inputs: the 7 features, shot number (A1a, A4, A5), shooter and
-session-shooter terms (A4 only).
+Allowed inputs: the 7 features; shot number (A1a, A4, A6); time to the next
+shot (A5 rhythm only); shooter and session-shooter terms (A4, A6).
 
 ## 7. Make/miss labels
 
