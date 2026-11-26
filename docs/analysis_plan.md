@@ -19,26 +19,63 @@ Any change to the analysis is written here first.
 - Unit of analysis: one shot.
 - Shot type: free throw, no jump, same spot.
 - Label: made / missed. Ground truth = manual labels.
-- Mehmet ~900 shots, father ~950 shots.
+- About 1,000 real shots per shooter (2,033 releases found).
 
-## 2. Analyses
+## 2. Primary features (frozen before any make/miss label is seen)
+
+All measured at release or before it, from the right side, in body units where
+a length is involved:
+
+1. Elbow angle at release (shoulder-elbow-wrist)
+2. Upper arm angle at release (hip-shoulder-elbow)
+3. Knee bend: smallest knee angle (hip-knee-ankle) between shot start and release
+4. Trunk lean at release (shoulder-hip line vs vertical)
+5. Release height: ball center height above the ankles, in torso lengths
+6. Wrist speed in the last 50 ms before release, in torso lengths per second
+7. Time from shot start to release
+
+Left out on purpose: ball launch angle and speed (measured after release, rule
+2); elbow flare (not visible from the side); feet and gaze (not measured
+reliably). Anything else is exploratory and reported as such.
+
+## 3. Analyses
 
 **A1. Mehmet's best form** (main result)
 - Data: Mehmet's shots only.
-- Question: which release mechanics are linked to made shots?
+- A1a. Together: a model with all primary features, leave-one-session-out.
+  Does release mechanics predict makes better than the base rate? (ROC AUC)
+- A1b. One by one, best range: for each primary feature, split the training
+  sessions into 5 equal-count bins (edges from training only), pick the bin
+  with the highest make rate, and on the held-out session compare the make
+  rate in that bin with the shooter's make rate in that session. Differences
+  are pooled over all held-out sessions.
+- Significance: shuffle make/miss within each session (10,000 times) and
+  repeat the whole procedure. Holm correction over the primary features.
+- Sensitivity: A1 is also run with features centered within each session.
+  Ranges that hold only in raw values are reported as such.
 
 **A2. Father's best form**
 - Same as A1 on father's shots.
 
 **A3. Comparison**
-- Are the best ranges in A1 and A2 different? Is ideal form personal?
+- Are the best bins from A1b and A2b different? Compared in each shooter's own
+  scale (session-centered), since raw angles also depend on camera angle.
 
 **A4. Consistency** (pooled, both shooters)
-- Each feature expressed as deviation from that shooter's own mean.
 - Question: does deviating from your own normal form lower the make rate?
+- For each primary feature: z = (x - median) / MAD, with median and MAD from
+  the same shooter's shots in the same session (no labels used). This removes
+  day-level offsets such as camera angle.
+- Primary measure: the mean of |z| over the primary features (how unusual the
+  shot is overall). Deviations in either direction count, so they cannot cancel.
+- Secondary: |z| per feature; and median and MAD from the training sessions
+  instead, which keeps day-level shifts in form but mixes them with camera angle.
+- Exploratory: signed z, and z with z^2, to see whether the effect is one-sided.
 - Shooter is a model input; raw (not normalized) features are not.
 
-## 3. Evaluation
+A5 (hot hand) is below.
+
+## 4. Evaluation
 
 - Split: leave-one-session-out. All shots of the held-out session,
   from both shooters, are excluded from training.
@@ -46,21 +83,39 @@ Any change to the analysis is written here first.
 - Baselines: always predict the majority class; shooter's base make rate.
 - Metrics: ROC AUC, log loss, accuracy.
 - Report results separately for 30 fps and 60 fps sessions.
-- Smallest reliably detectable effect with ~900 shots: about 8-10
-  percentage points in make rate.
 - Expected effect is small: a free throw without a jump is a consistent motion.
   A null result is reported as such, together with the smallest effect we could
   have detected. A4 (consistency) is the most likely place for a signal.
+- Camera geometry: per session, the shoulder separation in the side stance at
+  the start of the recording (relative to torso length) is reported as a check
+  of viewing angle.
 
-## 4. Leakage rules
+## 5. Power and multiple tests
+
+Smallest effect detectable with 80% power, assuming ~1,000 shots per shooter
+and a 65% make rate (recomputed with the real make rate after labeling; this
+uses no feature-outcome information):
+- A1b/A2b: best bin (~200 shots) vs the rest: ~11 points for one feature,
+  ~13-15 points with Holm correction over the primary features.
+- A4: ~3 points per 1 SD of mean |z| (both shooters, one continuous measure).
+- A5: make rate after a make vs after a miss: ~9 points.
+
+Corrections: Holm over the primary features in A1b/A2b. A4 and A5 have a single
+primary test and no correction. Secondary and exploratory results are not
+corrected and are labeled as such.
+
+## 6. Leakage rules
 
 1. **Split by session, never by random shots.** Shots in one session share
    light, camera and fatigue.
 2. **Only movement up to the release moment is a feature.** Nothing after
    release: the shooter reacts to the outcome. `duration_s` from shot
-   detection is NOT a feature.
+   detection is NOT a feature (it runs past release); time from shot start
+   to release is.
 3. **Every fitted step uses training sessions only:** scaling, feature
-   selection, "best range" thresholds, per-shooter means in A4.
+   selection, "best range" bins, thresholds. One planned exception: in A4 and
+   the session-centered sensitivity runs, median and MAD come from the
+   held-out session's own features, never its labels.
    Use scikit-learn Pipeline.
 4. **No session-identifying inputs:** camera distance, fps, date, light.
    Used only to check results per group.
@@ -76,6 +131,7 @@ Any change to the analysis is written here first.
    A random 10% of shots, stratified by session, is labeled again blind. The
    disagreement rate is reported as the label error rate. Disagreements are
    reviewed.
+  
 8. **YOLO fine-tune:** validation set is a whole held-out video,
    never random frames from training videos.
 9. **Experiment (step 9)** is the final out-of-sample test of A1.
@@ -102,7 +158,7 @@ within the session (warm-up / fatigue), shooter (A4 only).
   shooter. Otherwise look for a pattern; any fix is checked on a new random
   sample, not on these 40.
 
-  ## A5: Hot hand (decided before make/miss labels exist)
+## A5: Hot hand (decided before make/miss labels exist)
 
 - Question: is a shot more likely to go in after a make than after a miss?
 - Main measure (per shooter): P(make | previous make) - P(make | previous miss),
@@ -116,6 +172,5 @@ within the session (warm-up / fatigue), shooter (A4 only).
   the hot hand difference with time to next shot controlled, and, after misses
   only, whether a short wait predicts a make. These show whether an effect could
   come from rhythm rather than confidence; they are not proof of a cause.
-- With about 1000 shots per shooter, a difference of about 9-10 points would
-  likely be detected; smaller ones may be missed. A null result is reported
-  with this limit.
+- Power: see "Power and multiple tests". A null result is reported with that
+  limit.

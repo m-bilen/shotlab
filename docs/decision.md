@@ -66,7 +66,7 @@ at its end.
   father, who holds the ball at the set point. So the training window caught few
   frames after the father's release. The student still passed all 20 of his
   exam shots.
-  - **Fine-tuned yolo26n for the ball:** trained on 1568 reviewed crops from
+- **Fine-tuned yolo26n for the ball:** trained on 1568 reviewed crops from
   S01-S07, 100 epochs on a Colab T4 with default settings; the best epoch was
   picked on 320 crops from S08. On the release exam it matched yolo26m: 67/67
   within 2 frames (95% interval 94.6-100%), 64/64 on blind labels only, a release
@@ -80,7 +80,7 @@ at its end.
 - **Ball class from the model:** the code first asked for COCO class 32 ("sports
   ball"). The fine-tuned model has a single class 0, so it found nothing. The
   ball class is now read from the model's own class names.
-  - **Full-run audit:** 9 releases came less than 3 s after another release, in
+- **Full-run audit:** 9 releases came less than 3 s after another release, in
   6 sequences. In all 6, a rebound had got a release, so rebound rejection is
   not perfect (0/5 on the exam was a small sample). Every rebound that gets a
   release sits within 3 s of a real shot, so this check finds them, and make/miss
@@ -94,3 +94,10 @@ at its end.
   1.4 frames. The 4 training shots were also within 2 frames. With the exam,
   103/103 unseen shots. Two labels were typos (an extra or a missing digit);
   they were re-labeled from the video, not copied from the automatic result.
+- **Analysis plan tightened before labeling:** after an outside review and
+  before any make/miss label existed: the primary features were listed and
+  frozen; A4 now uses absolute deviation (signed deviations in both directions
+  would cancel) with median and MAD within each session (removes camera angle);
+  "best range" got an exact procedure (5 bins, chosen on training sessions,
+  tested on the held-out one); power was recomputed for each test and a Holm
+  correction added.

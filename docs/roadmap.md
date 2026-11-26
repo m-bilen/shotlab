@@ -17,6 +17,7 @@
 - [x] Release for all shots: 2033 found, 36/36 unseen shots within 2 frames in a blind check
 
 ## Next (January release)
+- [ ] Nov 26: Freeze the analysis plan (git tag prereg-v1) before labeling
 - [ ] Nov 26-Dec 2: Labeling tool with sound (made / missed / not a shot / can't tell)
 - [ ] Nov 26-Dec 2: Make/miss labels for all sessions, 10% re-labeled blind
 - [ ] Dec 3-9: Features (smoothing, release interpolation, calibration, measurement error) and shot table
