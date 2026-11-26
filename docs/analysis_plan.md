@@ -35,10 +35,14 @@ labeling marks them "not a shot".
 - **Shot start:** when the shot detector fires (right wrist above nose). Not a
   body event; used only to place windows.
 - **Release:** the release time of the shot (between frames).
-- **Torso length:** median right shoulder to right hip distance of that
-  shooter in that session.
+- **Torso length:** median right shoulder to right hip distance over all
+  frames of that shooter in that session.
 - **Landmarks:** right shoulder, elbow, wrist, index finger, hip, knee, ankle
   from MediaPipe. A landmark with visibility below 0.5 is missing.
+- **Ball:** from the fine-tuned yolo26n. If no ball is found within one frame
+  of the release, release height is missing for that shot.
+- **Real shots:** detected shots not labeled "not a shot". Normalizations use
+  all real shots (made, missed and can't tell alike); they use no outcome.
 
 ### Signal processing (fixed)
 1. Landmark positions are interpolated from their real timestamps onto an even
@@ -54,11 +58,11 @@ labeling marks them "not a shot".
 ### Features
 1. **Elbow angle** at release: shoulder-elbow-wrist.
 2. **Upper arm angle** at release: hip-shoulder-elbow.
-3. **Knee bend:** smallest knee angle (hip-knee-ankle) from W before shot start
-   to release, W = 1.0 s. W was checked before the freeze on 16 shots per
-   shooter, without labels (decision.md). Rule fixed before the check: if more
-   than 2 of the 32 shots have a pre-shot move (bounce, bend) inside the window,
-   the last local minimum before release is used instead of the smallest value.
+3. **Knee bend:** knee angle (hip-knee-ankle) at the last local minimum before
+   release that is at least 5 degrees below the knee angle at release, searched
+   from W = 1.0 s before shot start to release; if there is none, the smallest
+   angle in that window. Checked before the freeze on 16 shots per shooter,
+   without labels (decision.md).
 4. **Trunk lean** at release: angle of the shoulder-hip line to the image
    vertical, positive when the shoulder is ahead of the hip toward the basket.
 5. **Release height:** ball center height above the ankle at release, in torso
@@ -96,7 +100,9 @@ left out and checked separately (section 7).
 ### A1. Mehmet's best form (main result)
 - Data: Mehmet's shots.
 - **A1a. Together:** logistic regression with the 7 features and shot number,
-  leave-one-session-out, scaling fitted on training sessions. Shots with any
+  leave-one-session-out, scaling fitted on training sessions. Settings fixed
+  now: scikit-learn defaults (L2, C = 1.0); random forest with 500 trees,
+  at least 20 shots per leaf, seed 0. No tuning. Shots with any
   missing feature are left out (count reported). Metric: ROC AUC within each
   held-out session, averaged weighted by shots, so that differences between
   sessions cannot raise it. Baseline: logistic regression with shot number
@@ -141,7 +147,7 @@ left out and checked separately (section 7).
   95% interval from resampling blocks.
 - This is an inference model on all sessions, not a prediction of held-out
   sessions, so the session-shooter terms do not break rule 4.
-- Secondary: |z| per feature; z from training-session median and MAD instead
+- Secondary: |z| per feature;z from the median and MAD of the shooter's other sessions instead
   (keeps day-level form shifts, mixed with camera angle); Mahalanobis distance
   from the shooter-session typical shot with robust covariance (does not count
   the correlated arm features three times).
@@ -151,8 +157,8 @@ left out and checked separately (section 7).
 
 ### A5. Hot hand (per shooter)
 - Question: is a shot more likely to go in after a make than after a miss?
-- Pairs of consecutive labeled shots in a session. A "can't tell" or "not a
-  shot" breaks the sequence.
+- Pairs of consecutive real shots in a session. "Not a shot" detections are
+  skipped; a "can't tell" breaks the sequence.
 - Statistic: P(make | previous make) - P(make | previous miss).
 - Test: two-sided, make/miss shuffled within blocks of 20 consecutive shots in
   each session (10,000 times). Keeps slow trends (warm-up, fatigue) and accounts
@@ -161,6 +167,26 @@ left out and checked separately (section 7).
 - Rhythm (secondary, not proof of a cause): time to the next shot after makes
   vs after misses; the hot hand difference with time to the next shot as a
   covariate; after misses only, whether a short wait predicts a make.
+### A6. Warm-up and fatigue (secondary)
+- Make rate over shot number: logistic regression make ~ shot number + one term
+  per session, per shooter. Two-sided p from shuffling make/miss within each
+  session (10,000 times).
+- Features over shot number: the median of each feature in the first and last
+  quarter of each session, averaged over sessions. Descriptive.
+
+### M. Cost of leakage (method, decided before results)
+These analyses use a wrong setup on purpose, to show how much it would inflate
+the results. They are never reported as findings about shooting.
+- **M1. Random split:** A1a and A2a repeated with a random 5-fold split of
+  shots instead of leave-one-session-out, pooled AUC. Compared with the main
+  result.
+- **M2. After-release information:** A1a and A2a repeated with the ball's
+  launch angle (first 3 ball positions after release) added as a feature. Run
+  only if at least 80% of shots have the ball in 3 frames after release;
+  otherwise reported as not possible.
+- **M3. Random frames for the ball model (optional, after January):** a second
+  student trained with S08 frames mixed into training, tested on the same
+  exam, to show what a random frame split would have hidden.
 
 ## 4. Evaluation and reporting
 
@@ -183,6 +209,7 @@ uses no feature-outcome information).
   feature, ~12-14 points with Holm.
 - A4: ~3 points per 1 SD of mean |z|.
 - A5: ~9 points.
+A6 and M1-M3 are secondary; no correction.
 
 Holm over the 7 features in A1b, separately for each shooter. A1a, A4 and A5
 have a single primary test and no correction. Secondary and exploratory
@@ -218,6 +245,8 @@ session-shooter terms (A4 only).
 - The spoken word ("muz"/"elma") decides. If unclear, the ball at the rim
   decides. "Can't tell" only when neither does.
 - Labeling in sittings of at most ~400 shots.
+- Both checks are done after all first labels are finished and at least one
+  day later, so first decisions are not remembered.
 - Check (a): a random 10% of shots, stratified by session and shooter, labeled
   again with sound, without seeing the first labels. Measures labeling slips.
 - Check (b): 100 other random shots (50 per shooter), labeled with the sound

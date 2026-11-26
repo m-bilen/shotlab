@@ -126,6 +126,15 @@
   The A-B-B-A experiment is conditional, sized for ~9 points, with a
   manipulation check and block-level test.
 - **Knee bend window:** checked before the freeze on 16 random shots per
-  shooter, without labels. The deepest knee bend came FILL s (median) before
-  shot start for Mehmet and FILL s for his father; FILL of 32 had a pre-shot
-  move (bounce, bend) inside the window. W = FILL s.
+  shooter, without labels. The deepest knee bend came about 0.15 s before shot
+  start for Mehmet (range 0.06-0.31) and at or just after shot start for his
+  father (range 0.0-0.16): he lifts the ball first, then bends. W = 1.0 s covers
+  all of them. 4 of 32 had a bounce inside the window, so by the rule fixed
+  before the check the feature uses the last local minimum before release
+  (at least 5 degrees below the angle at release) instead of the smallest
+  value. In all 4 the deepest bend was in the shot, not the bounce.
+- **Plan completed before the freeze:** a final read found that the fatigue
+  question and the leakage-cost analyses (random split, after-release
+  information) had been agreed on but never written into the plan. Added as A6
+  and M1-M3. Model settings fixed with no tuning; "not a shot" no longer breaks
+  hot hand sequences; re-labels at least a day after first labels.
