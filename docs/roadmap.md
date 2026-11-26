@@ -17,16 +17,17 @@
 - [x] Release for all shots: 2033 found, 36/36 unseen shots within 2 frames in a blind check
 
 ## Next (January release)
-- [ ] Nov 26: Freeze the analysis plan (git tag prereg-v1) before labeling
-- [ ] Nov 26-Dec 2: Labeling tool with sound (made / missed / not a shot / can't tell)
-- [ ] Nov 26-Dec 2: Make/miss labels for all sessions, 10% re-labeled blind
-- [ ] Dec 3-9: Features (smoothing, release interpolation, calibration, measurement error) and shot table
-- [ ] Dec 10-Jan 5: Models and evaluation, A1-A5 (see analysis_plan.md)
+- [ ] Nov 26: Knee window check (16 shots per shooter, no labels), then freeze the analysis plan (git tag prereg-v1)
+- [ ] Nov 27-Dec 2: Labeling tool: plays each shot with sound, muted mode; made / missed / not a shot / can't tell
+- [ ] Nov 27-Dec 2: Make/miss labels for all sessions, in sittings of at most ~400 shots
+- [ ] Dec 2-3: Label checks: 10% relabeled with sound, 100 shots relabeled muted, both blind
+- [ ] Dec 3-9: Features: even time grid, smoothing, release interpolation, reliability (timing, stance jitter), camera angle check, shot table
+- [ ] Dec 10-Jan 5: Analyses A1-A5 (see analysis_plan.md)
 - [ ] Jan 6-12: Findings, plots, README, demo GIF
 
 ## Later
 - [ ] "Try it on your video": one command that finds shots and releases in a new video and writes an HTML consistency report
-- [ ] Experiment (A-B-B-A)
+- [ ] Experiment (A-B-B-A): only if A1/A2 find a range that holds (analysis_plan.md, section 8)
 - [ ] Automatic make/miss from ball and rim
 - [ ] FastAPI + SQLite backend
 - [ ] Automatic shooter region with YOLO person detection
