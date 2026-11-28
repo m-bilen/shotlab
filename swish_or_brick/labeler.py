@@ -22,11 +22,14 @@ def shots_to_label(releases):
     ids = [shot_id(v,f) for v, f in zip(shots["video_file"], shots["start_frame"])]
     return shots.assign(shot_id=ids)
 
-def read_labels(path):
+def read_label_rows(path):
     if path.exists():
-        labels = pd.read_csv(path)
-        return labels.drop_duplicates("shot_id", keep="last")
+        return pd.read_csv(path)
     return pd.DataFrame(columns=COLUMNS)
+
+
+def read_labels(path):
+    return read_label_rows(path).drop_duplicates("shot_id", keep="last")
 
 def remaining(shots, labels):
     return shots[~shots["shot_id"].isin(labels["shot_id"])]
@@ -37,11 +40,11 @@ def add_label(path, shot, label):
     row.to_csv(path, mode="a", header=not path.exists(), index=False)
 
 def undo_last(path):
-    labels = read_labels(path)
-    if labels.empty:
+    rows = read_label_rows(path)
+    if rows.empty:
         return None
-    labels.iloc[:-1].to_csv(path, index=False)
-    return labels["shot_id"].iloc[-1]
+    rows.iloc[:-1].to_csv(path, index=False)
+    return rows["shot_id"].iloc[-1]
 
 def clip(shot):
     return {

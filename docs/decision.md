@@ -145,3 +145,5 @@ last row for a shot counts (read_labels). First labels stay in the file. In
 S01 Mehmet, 3 rebound detections (audit_shots.csv) had taken the next shot's
 outcome; corrected to not_a_shot. Clips now run 5 s after release (was 3 s:
 the word often came later).
+On 28 Nov an undo rewrote the file without those 3 first labels; restored from
+commit ced8546, and undo now removes only the last raw row.

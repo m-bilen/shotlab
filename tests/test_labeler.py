@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from swish_or_brick.labeler import add_label, create_app, read_labels, shots_to_label, undo_last,AFTER_RELEASE_S
+from swish_or_brick.labeler import add_label, create_app, read_labels, shots_to_label, undo_last,AFTER_RELEASE_S,read_label_rows
 
 
 def make_releases():
@@ -42,3 +42,11 @@ def test_read_labels_keeps_last_label(tmp_path):
     labels = read_labels(path)
     assert len(labels) == 1
     assert labels["label"].iloc[0] == "not_a_shot"
+
+def test_undo_keeps_earlier_rows(tmp_path):
+    path = tmp_path / "labels.csv"
+    add_label(path, "a.mp4:10", "made")
+    add_label(path, "a.mp4:10", "not_a_shot")
+    add_label(path, "a.mp4:20", "missed")
+    undo_last(path)
+    assert len(read_label_rows(path)) == 2
